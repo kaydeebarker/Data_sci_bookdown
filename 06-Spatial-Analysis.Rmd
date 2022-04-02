@@ -1,0 +1,155 @@
+# Spatial Analysis in R
+
+>"Why are latitude and longitude so smart? Because they have so many degrees!"
+
+In this assignment, I learned to use R for spatial analyses.
+
+Data is from the [LAGOS dataset](https://lagoslakes.org/). Assignment by Dr. Matthew Ross and Dr. Nathan Mueller of Colorado State University.
+
+```{r Ch6 setup, warning=FALSE, include=FALSE}
+library(tidyverse) # Tidy packages
+library(dplyr)
+library(sf) #Spatial package that can read and create shapefiles 
+library(mapview) #Interactive maps
+library(LAGOSNE) #Lots and lots of clean lake data
+
+#install.packages("remotes") #installs package to install via github
+#remotes::install_github("ropensci/USAboundariesData") #installs USAboundaries
+
+library(USAboundaries) #USA states and counties
+
+```
+
+## Loading in data
+
+### First download and then specifically grab the locus (or site lat longs)
+
+```{r data-read}
+# #Lagos download script
+#LAGOSNE::lagosne_get(dest_folder = LAGOSNE:::lagos_path(), overwrite = TRUE)
+
+
+#Load in lagos
+lagos <- lagosne_load()
+
+#Grab the lake centroid info
+lake_centers <- lagos$locus
+
+
+```
+
+### Convert to spatial data
+```{r}
+#Look at the column names
+#names(lake_centers)
+
+#Look at the structure
+#str(lake_centers)
+
+#View the full dataset
+#View(lake_centers %>% slice(1:100))
+
+spatial_lakes <- st_as_sf(x = lake_centers, coords = c("nhd_long","nhd_lat"), crs = 4326) %>%
+  st_transform(2163)
+
+#mapview(spatial_lakes)
+
+#Subset for plotting
+subset_spatial <- spatial_lakes %>%
+  slice(1:100) 
+
+subset_baser <- spatial_lakes[1:100,]
+
+#Dynamic mapviewer
+#mapview(subset_spatial)
+
+```
+
+### Subset to only Minnesota
+
+```{r}
+states <- us_states()
+
+#Plot all the states to check if they loaded
+#mapview(states)
+
+minnesota <- states %>%
+  filter(name == 'Minnesota') %>%
+  st_transform(2163)
+#mapview(minnesota)
+
+#Subset lakes based on spatial position
+minnesota_lakes <- spatial_lakes[minnesota,]
+
+#Plotting the first 1000 lakes
+minnesota_lakes %>%
+  arrange(-lake_area_ha) %>%
+    slice(1:1000)
+  #mapview(.,zcol = 'lake_area_ha')
+```
+
+## 1) Show a map outline of Iowa and Illinois (similar to Minnesota map upstream)
+
+```{r}
+Istates <- states %>%
+  filter(name == 'Iowa'| name== 'Illinois') %>%
+  st_transform(2163)
+mapview(Istates, canvas = TRUE) 
+```
+
+## 2) Subset LAGOS data to these sites, how many sites are in Illinois and Iowa combined? How does this compare to Minnesota?
+
+```{r}
+
+Istates_lakes <- spatial_lakes[Istates,]
+
+nrow(Istates_lakes)
+Istates_count <- length(Istates_lakes$lagoslakeid)
+
+nrow(minnesota_lakes)
+Minn_count <- length(minnesota_lakes$lagoslakeid)
+
+```
+
+Iowa and Illinois have `r Istates_count` lakes combined, much less than the number of lakes that Minnesota alone has, `r Minn_count`.
+
+
+## 3) What is the distribution of lake size in Iowa vs. Minnesota?
+
+- Here I want to see a histogram plot with lake size on x-axis and frequency on y axis (check out geom_histogram)
+
+```{r, fig.cap="The number of lakes with a given area, in hectares, in Minnesota (red) and Iowa (blue)."}
+
+iowa <- states %>%
+  filter(name == 'Iowa') %>%
+  st_transform(2163)
+
+iowa_lakes <- spatial_lakes[iowa,]
+
+combined <- rbind(iowa_lakes, minnesota_lakes)
+
+ggplot(combined, aes(x= lake_area_ha)) + 
+  ggthemes::theme_few() + theme(legend.position="bottom") +
+  xlab("Lake Area (ha)") + ylab("Count") +
+  scale_x_continuous(trans = "log10", labels = scales::comma) +
+  geom_histogram(data = minnesota_lakes, color = "red", alpha = 0.2) + 
+  geom_histogram(data = iowa_lakes, color = "blue", alpha = 0.2) +
+  scale_fill_manual(values=c("blue","red"), "State")
+
+```
+
+## 4) Make an interactive plot of lakes in Iowa and Illinois and color them by lake area in hectares
+
+```{r, fig.cap="Lakes in Iowa and Illinois, colored by area in hectares."}
+Istates_map = Istates_lakes %>%
+  arrange(-lake_area_ha) %>%
+    slice(1:1000)
+
+mapview(Istates_map, zcol = 'lake_area_ha',  canvas = TRUE) 
+
+```
+
+
+## 5) What other data sources might we use to understand how reservoirs and natural lakes vary in size in these three states? 
+
+We might use the US Geological Survey (USGS) National Water Informational System (NWIS) and its National Water Dashboard as a data source, and look at gage height (indicating lake depth) as another parameter for lake size variation. The USGS National Hydrography Dataset (NHD) is another data source that would, similarly to Lagos, give us a surface area metric for lakes in the various states.

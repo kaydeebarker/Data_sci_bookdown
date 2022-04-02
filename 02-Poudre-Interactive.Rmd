@@ -1,0 +1,37 @@
+# Interactive Graphing: Discharge of the Poudre River 
+
+>"Someone asked me to name two structures that hold water. I was like, 'well… damn!'" 
+
+This assignment used a unique package of R Markdown (dygraphs) in order to create an interactive chart.
+
+Data and assignment provided by Dr. Matthew Ross and Dr. Nathan Mueller of Colorado State University.
+
+```{r Ch2 setup, include=FALSE}
+library(tidyverse)
+library(dataRetrieval)
+library(dygraphs) #this is for interactive
+library(xts)
+```
+
+## Background on the Poudre River
+
+[Cache La Poudre River](https://edits.nationalmap.gov/apps/gaz-domestic/public/summary/205018) is an important watershed that supports **agriculture, industry, recreation, and residential needs** on the Front Range of Colorado. It also provides for cottonwood forest, shrub, and grassland ecosystems that support [wildlife](http://poudretrail.org/habitat-wildlife/#fish) from the mountains down to the prairies. The unique **biodiversity** and **history** of the Cache La Poudre watershed are valued widely; 45 miles along the Poudre are encompassed in a [National Heritage Area](https://www.nps.gov/places/cache-la-poudre-river-national-heritage-area.htm).
+The history of Cache La Poudre is linked to the *history of the West*, because its banks supported the first major [irrigation-based agricultural settlement](https://www-jstor-org.ezproxy2.library.colostate.edu/stable/pdf/1821074.pdf) of its kind in 1870, which would soon spread through the Arid West.
+
+## Interactive Discharge Chart
+
+```{r interactive, fig.align='center', fig.cap="Discharge of the Poudre River in cubic feet per second from January 2017 to December 2021."}
+
+q <- readNWISdv(siteNumbers = '06752260',
+                parameterCd = '00060',
+                startDate = '2017-01-01',
+                endDate = '2022-01-01') %>%
+  rename(q = 'X_00060_00003')
+
+q_xts <- xts(q$q, order.by = q$Date)
+
+dygraph(q_xts) %>%
+  dyAxis("y", label = "Discharge (cfs)") %>%
+  dyOptions(drawPoints = TRUE, pointSize = 2)
+
+```

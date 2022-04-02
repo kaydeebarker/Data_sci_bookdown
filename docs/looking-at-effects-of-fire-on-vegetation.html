@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Looking at Effects of Fire on Vegetation | We R Under Way: A Data Science Portfolio</title>
+  <meta name="description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
+  <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Looking at Effects of Fire on Vegetation | We R Under Way: A Data Science Portfolio" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Looking at Effects of Fire on Vegetation | We R Under Way: A Data Science Portfolio" />
+  
+  <meta name="twitter:description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
+  
+
+<meta name="author" content="Kaydee Barker" />
+
+
+<meta name="date" content="2022-03-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="interactive-graphing-discharge-of-the-poudre-river.html"/>
+<link rel="next" href="fire-effects-on-fish-populations.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.0/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.0/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">We R Under Way: A Data Science Portfolio</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction<span></span></a></li>
+<li class="chapter" data-level="2" data-path="interactive-graphing-discharge-of-the-poudre-river.html"><a href="interactive-graphing-discharge-of-the-poudre-river.html"><i class="fa fa-check"></i><b>2</b> Interactive Graphing: Discharge of the Poudre River<span></span></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="interactive-graphing-discharge-of-the-poudre-river.html"><a href="interactive-graphing-discharge-of-the-poudre-river.html#background-on-the-poudre-river"><i class="fa fa-check"></i><b>2.1</b> Background on the Poudre River<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="interactive-graphing-discharge-of-the-poudre-river.html"><a href="interactive-graphing-discharge-of-the-poudre-river.html#interactive-discharge-chart"><i class="fa fa-check"></i><b>2.2</b> Interactive Discharge Chart<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="looking-at-effects-of-fire-on-vegetation.html"><a href="looking-at-effects-of-fire-on-vegetation.html"><i class="fa fa-check"></i><b>3</b> Looking at Effects of Fire on Vegetation<span></span></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="looking-at-effects-of-fire-on-vegetation.html"><a href="looking-at-effects-of-fire-on-vegetation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="looking-at-effects-of-fire-on-vegetation.html"><a href="looking-at-effects-of-fire-on-vegetation.html#what-is-the-correlation-between-ndvi-and-ndmi"><i class="fa fa-check"></i><b>3.2</b> What is the correlation between NDVI and NDMI?<span></span></a></li>
+<li class="chapter" data-level="3.3" data-path="looking-at-effects-of-fire-on-vegetation.html"><a href="looking-at-effects-of-fire-on-vegetation.html#what-month-is-the-greenest-month-on-average"><i class="fa fa-check"></i><b>3.3</b> What month is the greenest month on average?<span></span></a></li>
+<li class="chapter" data-level="3.4" data-path="looking-at-effects-of-fire-on-vegetation.html"><a href="looking-at-effects-of-fire-on-vegetation.html#what-month-is-the-snowiest-on-average"><i class="fa fa-check"></i><b>3.4</b> What month is the snowiest on average?<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="fire-effects-on-fish-populations.html"><a href="fire-effects-on-fish-populations.html"><i class="fa fa-check"></i><b>4</b> Fire Effects on Fish Populations<span></span></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="fire-effects-on-fish-populations.html"><a href="fire-effects-on-fish-populations.html#pre-versus-post-fire-fish-length-and-mass"><i class="fa fa-check"></i><b>4.1</b> Pre versus post fire fish length and mass<span></span></a></li>
+<li class="chapter" data-level="4.2" data-path="fire-effects-on-fish-populations.html"><a href="fire-effects-on-fish-populations.html#linear-regression-of-fish-mass-vs.-length-for-before-and-after-the-fire"><i class="fa fa-check"></i><b>4.2</b> Linear regression of fish mass vs. length for before and after the fire<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html"><i class="fa fa-check"></i><b>5</b> Extracting and Visualizing Meteorological Data<span></span></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#extract-the-meteorological-data-urls.-here-we-want-you-to-use-the-rvest-package-to-get-the-urls-for-the-sasp-forcing-and-sbsp_forcing-meteorological-datasets."><i class="fa fa-check"></i><b>5.1</b> 1. Extract the meteorological data URLs. Here we want you to use the <code>rvest</code> package to get the URLs for the <code>SASP forcing</code> and <code>SBSP_forcing</code> meteorological datasets.<span></span></a></li>
+<li class="chapter" data-level="5.2" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#download-the-meteorological-data.-use-the-download_file-and-str_split_fixed-commands-to-download-the-data-and-save-it-in-your-data-folder.-you-can-use-a-for-loop-or-a-map-function."><i class="fa fa-check"></i><b>5.2</b> 2. Download the meteorological data. Use the <code>download_file</code> and <code>str_split_fixed</code> commands to download the data and save it in your data folder. You can use a for loop or a map function.<span></span></a></li>
+<li class="chapter" data-level="5.3" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#write-a-custom-function-to-read-in-the-data-and-append-a-site-column-to-the-data."><i class="fa fa-check"></i><b>5.3</b> 3. Write a custom function to read in the data and append a site column to the data.<span></span></a></li>
+<li class="chapter" data-level="5.4" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#use-the-map-function-to-read-in-both-meteorological-files.-display-a-summary-of-your-tibble."><i class="fa fa-check"></i><b>5.4</b> 4. Use the <code>map</code> function to read in both meteorological files. Display a summary of your tibble.<span></span></a></li>
+<li class="chapter" data-level="5.5" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#make-a-line-plot-of-mean-temp-by-year-by-site-using-the-air-temp-k-variable.-is-there-anything-suspicious-in-the-plot-adjust-your-filtering-if-needed."><i class="fa fa-check"></i><b>5.5</b> 5. Make a line plot of mean temp by year by site (using the <code>air temp [K]</code> variable). Is there anything suspicious in the plot? Adjust your filtering if needed.<span></span></a></li>
+<li class="chapter" data-level="5.6" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#write-a-function-that-makes-line-plots-of-monthly-average-temperature-at-each-site-for-a-given-year.-use-a-for-loop-to-make-these-plots-for-2005-to-2010."><i class="fa fa-check"></i><b>5.6</b> 6. Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010.<span></span></a></li>
+<li class="chapter" data-level="5.7" data-path="extracting-and-visualizing-meteorological-data.html"><a href="extracting-and-visualizing-meteorological-data.html#bonus-make-a-plot-of-average-daily-precipitation-by-day-of-year-averaged-across-all-available-years"><i class="fa fa-check"></i><b>5.7</b> Bonus: Make a plot of average daily precipitation by day of year (averaged across all available years)<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html"><i class="fa fa-check"></i><b>6</b> Spatial Analysis in R<span></span></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#loading-in-data"><i class="fa fa-check"></i><b>6.1</b> Loading in data<span></span></a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#first-download-and-then-specifically-grab-the-locus-or-site-lat-longs"><i class="fa fa-check"></i><b>6.1.1</b> First download and then specifically grab the locus (or site lat longs)<span></span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#convert-to-spatial-data"><i class="fa fa-check"></i><b>6.1.2</b> Convert to spatial data<span></span></a></li>
+<li class="chapter" data-level="6.1.3" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#subset-to-only-minnesota"><i class="fa fa-check"></i><b>6.1.3</b> Subset to only Minnesota<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#show-a-map-outline-of-iowa-and-illinois-similar-to-minnesota-map-upstream"><i class="fa fa-check"></i><b>6.2</b> 1) Show a map outline of Iowa and Illinois (similar to Minnesota map upstream)<span></span></a></li>
+<li class="chapter" data-level="6.3" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#subset-lagos-data-to-these-sites-how-many-sites-are-in-illinois-and-iowa-combined-how-does-this-compare-to-minnesota"><i class="fa fa-check"></i><b>6.3</b> 2) Subset LAGOS data to these sites, how many sites are in Illinois and Iowa combined? How does this compare to Minnesota?<span></span></a></li>
+<li class="chapter" data-level="6.4" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#what-is-the-distribution-of-lake-size-in-iowa-vs.-minnesota"><i class="fa fa-check"></i><b>6.4</b> 3) What is the distribution of lake size in Iowa vs. Minnesota?<span></span></a></li>
+<li class="chapter" data-level="6.5" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#make-an-interactive-plot-of-lakes-in-iowa-and-illinois-and-color-them-by-lake-area-in-hectares"><i class="fa fa-check"></i><b>6.5</b> 4) Make an interactive plot of lakes in Iowa and Illinois and color them by lake area in hectares<span></span></a></li>
+<li class="chapter" data-level="6.6" data-path="spatial-analysis-in-r.html"><a href="spatial-analysis-in-r.html#what-other-data-sources-might-we-use-to-understand-how-reservoirs-and-natural-lakes-vary-in-size-in-these-three-states"><i class="fa fa-check"></i><b>6.6</b> 5) What other data sources might we use to understand how reservoirs and natural lakes vary in size in these three states?<span></span></a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">We R Under Way: A Data Science Portfolio</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="looking-at-effects-of-fire-on-vegetation" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Looking at Effects of Fire on Vegetation<a href="looking-at-effects-of-fire-on-vegetation.html#looking-at-effects-of-fire-on-vegetation" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<blockquote>
+<p>“What happens when a wildfire tells you a joke? You get burned!”</p>
+</blockquote>
+<p>This assignment demonstrates the benefit of visualizing data to see potential correlations.</p>
+<p>Data and assignment provided by Dr. Matthew Ross and Dr. Nathan Mueller of Colorado State University.</p>
+<div id="introduction" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Introduction<a href="looking-at-effects-of-fire-on-vegetation.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Hayman Fire, started by arsen in summer of 2002, was the largest wildfire in Colorado history until the 2020 wildfire season. It burned a large area of over 138 thousand acres between the Kenosha Mountains and Pikes Peak, affecting wildlife and causing water quality concerns for the Front Range populations through damage to watersheds that contribute to the South Platte River.</p>
+</div>
+<div id="what-is-the-correlation-between-ndvi-and-ndmi" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> What is the correlation between NDVI and NDMI?<a href="looking-at-effects-of-fire-on-vegetation.html#what-is-the-correlation-between-ndvi-and-ndmi" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Normalized Difference Vegetation Index (NDVI) is positively correlated with the Normalized Difference Moisture Index (NDMI). In everyday terms, NDVI indicates plant health as shown by how well leaves reflect near infrared and red light, while NDMI represents plant water content and is calculated from near infrared and short-wave infrared reflectance values (<a href="https://www.agricolus.com/en/vegetation-indices-ndvi-ndmi/">Agricolus, 2018</a>). These values can also tell us about how much vegetative cover there is at a given site, with the lowest NDVI (&lt;0.1) and NDMI (&lt;-0.8) values indicating bare soil.</p>
+<p>Not surprisingly, the plot below shows that canopy cover is greatly decreased for the burned site compared to the unburned site.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot of wide set in summer</span></span>
+<span id="cb2-2"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-2" aria-hidden="true" tabindex="-1"></a>full_wide <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2002</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x=</span>ndmi,<span class="at">y=</span>ndvi, <span class="at">color=</span>treatment)) <span class="sc">+</span> </span>
+<span id="cb2-6"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape=</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb2-7"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;NDMI&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;NDVI&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Burned vs. Unburned Vegetation&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-9"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb2-10"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="looking-at-effects-of-fire-on-vegetation.html#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major=</span><span class="fu">element_blank</span>(), <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(), <span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-2-1.png" alt="NDVI and NDMI values from 2002 to 2019 in Colorado sites that were burned (teal) or left unburned (orange) during the Hayman Fire." width="672" />
+<p class="caption">
+Figure 3.1: NDVI and NDMI values from 2002 to 2019 in Colorado sites that were burned (teal) or left unburned (orange) during the Hayman Fire.
+</p>
+</div>
+<p>As may be expected, vegetative growth (NDVI) is positively associated with the previous winter’s snowfall, as shown in the plot below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot winter NDSI to summer NDVI</span></span>
+<span id="cb3-2"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ndvi_ndsi, <span class="fu">aes</span>(<span class="at">x =</span> mean_NDVI, <span class="at">y =</span> mean_NDSI)) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb3-4"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, </span>
+<span id="cb3-5"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb3-7"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">se =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-8"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">lty =</span> <span class="dv">1</span>,</span>
+<span id="cb3-9"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb3-10"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>,</span>
+<span id="cb3-11"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Mean NDSI&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;Mean NDVI&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Winter NDSI vs. Summer NDVI&quot;</span>) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">pretty</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.4</span>,<span class="fl">0.5</span>), <span class="at">n =</span> <span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">pretty</span>(<span class="fu">c</span>(<span class="fl">0.2</span>,<span class="fl">0.5</span>), <span class="at">n =</span> <span class="dv">6</span>)) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="looking-at-effects-of-fire-on-vegetation.html#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major=</span><span class="fu">element_blank</span>(), <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(), <span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-3-1.png" alt="Linear models for mean summer NDVI and mean winter NDSI for pre- and post-burn and burned and unburned sites." width="480" />
+<p class="caption">
+Figure 3.2: Linear models for mean summer NDVI and mean winter NDSI for pre- and post-burn and burned and unburned sites.
+</p>
+</div>
+</div>
+<div id="what-month-is-the-greenest-month-on-average" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> What month is the greenest month on average?<a href="looking-at-effects-of-fire-on-vegetation.html#what-month-is-the-greenest-month-on-average" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If we plot monthly means of NDVI, we can see that the greenest month in Colorado is August.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot of monthly means</span></span>
+<span id="cb5-2"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-2" aria-hidden="true" tabindex="-1"></a>monthly_sum <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(data <span class="sc">==</span> <span class="st">&quot;ndvi&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(month), <span class="fu">funs</span>(factor)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x=</span>month, <span class="at">y=</span>value_mean, <span class="at">fill=</span>month)) <span class="sc">+</span> </span>
+<span id="cb5-6"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>value_mean<span class="sc">-</span>value_std.error, <span class="at">ymax=</span>value_mean<span class="sc">+</span>value_std.error), </span>
+<span id="cb5-8"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;5&quot;</span><span class="ot">=</span><span class="st">&quot;May&quot;</span>, <span class="st">&quot;6&quot;</span><span class="ot">=</span><span class="st">&quot;June&quot;</span>, <span class="st">&quot;7&quot;</span><span class="ot">=</span><span class="st">&quot;Jul.&quot;</span>, <span class="st">&quot;8&quot;</span><span class="ot">=</span><span class="st">&quot;Aug.&quot;</span>, <span class="st">&quot;9&quot;</span><span class="ot">=</span><span class="st">&quot;Sept.&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Month&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;NDVI&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Average NDVI per Month&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>() <span class="sc">+</span></span>
+<span id="cb5-13"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Greens&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major=</span><span class="fu">element_blank</span>(), </span>
+<span id="cb5-15"><a href="looking-at-effects-of-fire-on-vegetation.html#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(), <span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-4-1.png" alt="Mean NDVI and standard error per summer month across sites from 1984 to 2019." width="672" />
+<p class="caption">
+Figure 3.3: Mean NDVI and standard error per summer month across sites from 1984 to 2019.
+</p>
+</div>
+</div>
+<div id="what-month-is-the-snowiest-on-average" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> What month is the snowiest on average?<a href="looking-at-effects-of-fire-on-vegetation.html#what-month-is-the-snowiest-on-average" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If we plot the NDSI means for the winter months, we can see that the highest snowfall is January.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change ordering manually and make month into factor</span></span>
+<span id="cb6-2"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-2" aria-hidden="true" tabindex="-1"></a>monthly_win<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">factor</span>(monthly_win<span class="sc">$</span>month,   </span>
+<span id="cb6-3"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;11&quot;</span>,<span class="st">&quot;12&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>))</span>
+<span id="cb6-4"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-5" aria-hidden="true" tabindex="-1"></a>monthly_win <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(data <span class="sc">==</span> <span class="st">&quot;ndsi&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x=</span>month,<span class="at">y=</span>value_mean, <span class="at">fill=</span>month)) <span class="sc">+</span> </span>
+<span id="cb6-8"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>value_mean<span class="sc">-</span>value_std.error, <span class="at">ymax=</span>value_mean<span class="sc">+</span>value_std.error), </span>
+<span id="cb6-10"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">width =</span> <span class="fl">0.7</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;11&quot;</span><span class="ot">=</span><span class="st">&quot;Nov.&quot;</span>, <span class="st">&quot;12&quot;</span><span class="ot">=</span><span class="st">&quot;Dec&quot;</span>, <span class="st">&quot;1&quot;</span><span class="ot">=</span><span class="st">&quot;Jan.&quot;</span>, <span class="st">&quot;2&quot;</span><span class="ot">=</span><span class="st">&quot;Feb.&quot;</span>, </span>
+<span id="cb6-12"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-12" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;3&quot;</span><span class="ot">=</span><span class="st">&quot;Mar.&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Month&quot;</span>) <span class="sc">+</span>  <span class="fu">ylab</span>(<span class="st">&quot;NDSI&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Average NDSI per Month&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>() <span class="sc">+</span></span>
+<span id="cb6-16"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Purples&quot;</span>) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major=</span><span class="fu">element_blank</span>(), <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(), </span>
+<span id="cb6-18"><a href="looking-at-effects-of-fire-on-vegetation.html#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-5-1.png" alt="Mean NDSI and standard error per winter month across sites from 1984 to 2019." width="672" />
+<p class="caption">
+Figure 3.4: Mean NDSI and standard error per winter month across sites from 1984 to 2019.
+</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="interactive-graphing-discharge-of-the-poudre-river.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fire-effects-on-fish-populations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Rportfolio-bookdown.pdf", "Rportfolio-bookdown.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

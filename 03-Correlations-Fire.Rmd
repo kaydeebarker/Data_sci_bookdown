@@ -1,0 +1,194 @@
+# Looking at Effects of Fire on Vegetation
+
+>"What happens when a wildfire tells you a joke? You get burned!"
+
+This assignment demonstrates the benefit of visualizing data to see potential correlations.
+
+Data and assignment provided by Dr. Matthew Ross and Dr. Nathan Mueller of Colorado State University.
+ 
+
+```{r Ch3 setup, warning=FALSE, echo=FALSE, message=FALSE}
+
+library(tidyverse)
+library(tidyr)
+library(ggthemes)
+library(emmeans)
+library(plotrix)
+library(lubridate)
+
+knitr::opts_knit$set(root.dir='..')
+
+```
+
+```{r Ch3 dataread, warning=FALSE, echo=FALSE, message=FALSE}
+####-----Reading in Data and Stacking it ----- ####
+#Reading in files
+files <- list.files('Data_sci_bookdown/data/fire-recovery',full.names=T)
+
+#Read in individual data files
+ndmi <- read_csv('Data_sci_bookdown/data/fire-recovery/hayman_ndmi.csv') %>% 
+  rename(burned=2,unburned=3) %>%
+  mutate(data='ndmi')
+
+ndsi <- read_csv('Data_sci_bookdown/data/fire-recovery/hayman_ndsi.csv') %>% 
+  rename(burned=2,unburned=3) %>%
+  mutate(data='ndsi')
+
+ndvi <- read_csv('Data_sci_bookdown/data/fire-recovery/hayman_ndvi.csv')%>% 
+  rename(burned=2,unburned=3) %>%
+  mutate(data='ndvi')
+
+# Stack as a tidy dataset
+full_long <- rbind(ndvi,ndmi,ndsi) %>%
+  gather(key='treatment',value='value',-DateTime,-data) %>%
+  filter(!is.na(value))
+
+# another way to do the na on all but the date is to do filter_if(is.numeric, all_vars(!is.na(.)))
+
+# Convert full_long dataset to wide format
+full_wide<-spread(full_long,data,value) %>%
+  mutate(month=month(DateTime),
+         year = year(DateTime))
+```
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Convert to wide with modern syntax, add pre and post burn
+full_wide2 <- full_long %>%
+  pivot_wider(names_from = data, values_from=value) %>% # determines observation name and value columns
+  mutate(year=year(DateTime)) %>%
+  mutate(month=month(DateTime)) %>%
+  mutate(status = if(year < 2002) {"pre-burn"} else {"post-burn"})
+
+# Winter only ndsi
+ndsi_win <- full_wide2 %>% 
+  filter(month %in% c(11,12,1,2,3,4)) %>% 
+  group_by(year, treatment) %>%
+  summarize(mean_NDSI=mean(ndsi))
+
+# Summer only ndvi
+ndvi_sum <- full_wide2 %>% 
+  filter(month %in% c(6,7,8,9)) %>% 
+  group_by(year, treatment) %>%
+  summarize(mean_NDVI=mean(ndvi))
+  
+# Join NDVI and NDSI data together
+ndvi_ndsi <- inner_join(ndvi_sum, ndsi_win, by = c("year", "treatment")) %>%
+  mutate(status = if(year < 2002) {"pre-burn"} else {"post-burn"})
+
+# Make monthly dataset, make averages of months, only summer season
+monthly_sum <- full_long %>%
+  mutate(year=year(DateTime)) %>%
+  mutate(month=month(DateTime)) %>%
+  filter(month %in% c(5,6,7,8,9)) %>%
+  group_by(data, month) %>%
+  summarise_all(funs(mean(., na.rm=TRUE), sd(., na.rm=TRUE), std.error(., na.rm=TRUE)))
+
+monthly_win <- full_long %>%
+  mutate(year=year(DateTime)) %>%
+  mutate(month=month(DateTime)) %>%
+  filter(month %in% c(11,12,1,2,3)) %>%
+  group_by(data, month) %>%
+  summarise_all(funs(mean(., na.rm=TRUE), sd(., na.rm=TRUE), std.error(., na.rm=TRUE)))
+
+```
+
+## Introduction
+
+The Hayman Fire, started by arsen in summer of 2002, was the largest wildfire in Colorado history until the 2020 wildfire season. It burned a large area of over 138 thousand acres between the Kenosha Mountains and Pikes Peak, affecting wildlife and causing water quality concerns for the Front Range populations through damage to watersheds that contribute to the South Platte River.
+
+## What is the correlation between NDVI and NDMI?
+
+The Normalized Difference Vegetation Index (NDVI) is positively correlated with the Normalized Difference Moisture Index (NDMI). In everyday terms, NDVI indicates plant health as shown by how well leaves reflect near infrared and red light, while NDMI represents plant water content and is calculated from near infrared and short-wave infrared reflectance values ([Agricolus, 2018](https://www.agricolus.com/en/vegetation-indices-ndvi-ndmi/)). These values can also tell us about how much vegetative cover there is at a given site, with the lowest NDVI (<0.1) and NDMI (<-0.8) values indicating bare soil.
+
+Not surprisingly, the plot below shows that canopy cover is greatly decreased for the burned site compared to the unburned site.
+
+```{r, warning = FALSE, fig.cap="NDVI and NDMI values from 2002 to 2019 in Colorado sites that were burned (teal) or left unburned (orange) during the Hayman Fire."}
+
+#ggplot of wide set in summer
+full_wide %>%
+  filter(month %in% c(6,7,8,9,10)) %>%
+  filter(year >= 2002) %>%
+ggplot(., aes(x=ndmi,y=ndvi, color=treatment)) + 
+  geom_point(shape=1) + 
+  xlab("NDMI") + ylab("NDVI") +
+  ggtitle("Burned vs. Unburned Vegetation") +
+  theme_few(base_size = 16) +
+  scale_color_brewer(palette = "Set2") +
+  theme(panel.grid.major=element_blank(), panel.grid.minor=element_blank(), legend.position="bottom")
+
+```
+
+As may be expected, vegetative growth (NDVI) is positively associated with the previous winter's snowfall, as shown in the plot below.
+
+```{r, warning = FALSE, fig.height= 6, fig.width= 5, fig.cap="Linear models for mean summer NDVI and mean winter NDSI for pre- and post-burn and burned and unburned sites."}
+
+#ggplot winter NDSI to summer NDVI
+ggplot(ndvi_ndsi, aes(x = mean_NDVI, y = mean_NDSI)) +
+  geom_point(fill = "blue", 
+             shape = 21, 
+             size = 2) +
+  geom_smooth(method = "lm",
+              se = TRUE,
+              lty = 1,
+              color = "black",
+              fill = "lightgrey",
+              size = 1) +
+  xlab("Mean NDSI") + ylab("Mean NDVI") +
+  ggtitle("Winter NDSI vs. Summer NDVI") +
+  theme_few(base_size = 16) +
+  scale_y_continuous(breaks = pretty(c(-0.4,0.5), n = 4)) +
+  scale_x_continuous(breaks = pretty(c(0.2,0.5), n = 6)) +
+  theme(panel.grid.major=element_blank(), panel.grid.minor=element_blank(), legend.position="bottom")
+
+```
+
+## What month is the greenest month on average? 
+
+If we plot monthly means of NDVI, we can see that the greenest month in Colorado is August.
+
+```{r, warning = FALSE, fig.cap="Mean NDVI and standard error per summer month across sites from 1984 to 2019."}
+
+#ggplot of monthly means
+monthly_sum %>%
+  filter(data == "ndvi") %>%
+  mutate_at(vars(month), funs(factor)) %>%
+ggplot(., aes(x=month, y=value_mean, fill=month)) + 
+  geom_bar(stat = "identity", width = 0.7, position = "dodge") +
+  geom_errorbar(aes(ymin=value_mean-value_std.error, ymax=value_mean+value_std.error), 
+                colour = "black", width = 0.7, position = "dodge") +
+  scale_x_discrete(labels=c("5"="May", "6"="June", "7"="Jul.", "8"="Aug.", "9"="Sept.")) +
+  xlab("Month") +  ylab("NDVI") +
+  ggtitle("Average NDVI per Month") +
+  theme_few() +
+  scale_fill_brewer(palette = "Greens") +
+  theme(panel.grid.major=element_blank(), 
+        panel.grid.minor=element_blank(), legend.position="none")
+
+```
+
+## What month is the snowiest on average?
+
+If we plot the NDSI means for the winter months, we can see that the highest snowfall is January.
+
+```{r, warning = FALSE, fig.cap="Mean NDSI and standard error per winter month across sites from 1984 to 2019."}
+
+# Change ordering manually and make month into factor
+monthly_win$month <- factor(monthly_win$month,   
+                  levels = c("11","12", "1", "2", "3"))
+
+monthly_win %>%
+  filter(data == "ndsi") %>%
+ggplot(., aes(x=month,y=value_mean, fill=month)) + 
+  geom_bar(stat = "identity", width = 0.7, position = "dodge") +
+  geom_errorbar(aes(ymin=value_mean-value_std.error, ymax=value_mean+value_std.error), 
+                colour = "black", width = 0.7, position = "dodge") +
+  scale_x_discrete(labels=c("11"="Nov.", "12"="Dec", "1"="Jan.", "2"="Feb.", 
+                            "3"="Mar.")) +
+  xlab("Month") +  ylab("NDSI") +
+  ggtitle("Average NDSI per Month") +
+  theme_few() +
+  scale_fill_brewer(palette = "Purples") +
+  theme(panel.grid.major=element_blank(), panel.grid.minor=element_blank(), 
+        legend.position="none")
+
+```

@@ -4,6 +4,7 @@ author: "Kaydee Barker"
 date: "03/21/2022"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
+always_allow_html: yes
 documentclass: book
 bibliography: [packages.bib]
 biblio-style: apalike
@@ -18,8 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
+
 ```
 
-Writing and code by Kaydee Barker, assignments by Dr. Lefsky (ESS 330) and Dr. Ross and Dr. Mueller (SOCR 580A7) of Colorado State University. Data cited within chapters.
+Writing and code by Kaydee Barker, assignments by Dr. Ross and Dr. Mueller (SOCR 580A7), Dr. Lefsky (ESS 330) of Colorado State University. Data cited within chapters.
 
 

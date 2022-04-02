@@ -5,4 +5,5 @@ language:
 output_dir: docs
 delete_merged_file: true
 clean: [packages.bib, bookdown.bbl]
-
+new_session: no
+always_allow_html: true

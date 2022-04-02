@@ -41,6 +41,46 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -85,7 +125,7 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-Writing and code by Kaydee Barker, assignments by Dr.~Lefsky (ESS 330) and Dr.~Ross and Dr.~Mueller (SOCR 580A7) of Colorado State University. Data cited within chapters.
+Writing and code by Kaydee Barker, assignments by Dr.~Ross and Dr.~Mueller (SOCR 580A7), Dr.~Lefsky (ESS 330) of Colorado State University. Data cited within chapters.
 
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
@@ -95,6 +135,1053 @@ Writing and code by Kaydee Barker, assignments by Dr.~Lefsky (ESS 330) and Dr.~R
 \end{quote}
 
 I began my foray into R in the spring of 2020, first teaching myself some basic syntax and then using it for statistical analysis on my research projects as an undergraduate researcher at Colorado State University (CSU). With the help of my research mentors and many amazing people of the internet, I was able to fumble my way forward and learn a number of techniques to analyze and visualize data in R. I have since been building on my R and data science skills, including with the help of two key courses at CSU: ``Quantitative Reasoning for Ecosystem Science'' (ESS 330) and ``Introduction to Environmental Data Science'' (SOCR 580A7). Since I can't yet publish data from my research projects, this portfolio is constructed of public data examples, primarily from my coursework in those two courses. Its purpose is a) to serve as a reference for myself and others learning to use R for environmental analyses, and b) to demonstrate my current R knowledge to advisors and colleagues.
+
+\hypertarget{interactive-graphing-discharge-of-the-poudre-river}{%
+\chapter{Interactive Graphing: Discharge of the Poudre River}\label{interactive-graphing-discharge-of-the-poudre-river}}
+
+\begin{quote}
+``Someone asked me to name two structures that hold water. I was like, `well\ldots{} damn!'\,''
+\end{quote}
+
+This assignment used a unique package of R Markdown (dygraphs) in order to create an interactive chart.
+
+Data and assignment provided by Dr.~Matthew Ross and Dr.~Nathan Mueller of Colorado State University.
+
+\hypertarget{background-on-the-poudre-river}{%
+\section{Background on the Poudre River}\label{background-on-the-poudre-river}}
+
+\href{https://edits.nationalmap.gov/apps/gaz-domestic/public/summary/205018}{Cache La Poudre River} is an important watershed that supports \textbf{agriculture, industry, recreation, and residential needs} on the Front Range of Colorado. It also provides for cottonwood forest, shrub, and grassland ecosystems that support \href{http://poudretrail.org/habitat-wildlife/\#fish}{wildlife} from the mountains down to the prairies. The unique \textbf{biodiversity} and \textbf{history} of the Cache La Poudre watershed are valued widely; 45 miles along the Poudre are encompassed in a \href{https://www.nps.gov/places/cache-la-poudre-river-national-heritage-area.htm}{National Heritage Area}.
+The history of Cache La Poudre is linked to the \emph{history of the West}, because its banks supported the first major \href{https://www-jstor-org.ezproxy2.library.colostate.edu/stable/pdf/1821074.pdf}{irrigation-based agricultural settlement} of its kind in 1870, which would soon spread through the Arid West.
+
+\hypertarget{interactive-discharge-chart}{%
+\section{Interactive Discharge Chart}\label{interactive-discharge-chart}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{q }\OtherTok{\textless{}{-}} \FunctionTok{readNWISdv}\NormalTok{(}\AttributeTok{siteNumbers =} \StringTok{\textquotesingle{}06752260\textquotesingle{}}\NormalTok{,}
+                \AttributeTok{parameterCd =} \StringTok{\textquotesingle{}00060\textquotesingle{}}\NormalTok{,}
+                \AttributeTok{startDate =} \StringTok{\textquotesingle{}2017{-}01{-}01\textquotesingle{}}\NormalTok{,}
+                \AttributeTok{endDate =} \StringTok{\textquotesingle{}2022{-}01{-}01\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{q =} \StringTok{\textquotesingle{}X\_00060\_00003\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{q\_xts }\OtherTok{\textless{}{-}} \FunctionTok{xts}\NormalTok{(q}\SpecialCharTok{$}\NormalTok{q, }\AttributeTok{order.by =}\NormalTok{ q}\SpecialCharTok{$}\NormalTok{Date)}
+
+\FunctionTok{dygraph}\NormalTok{(q\_xts) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{dyAxis}\NormalTok{(}\StringTok{"y"}\NormalTok{, }\AttributeTok{label =} \StringTok{"Discharge (cfs)"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{dyOptions}\NormalTok{(}\AttributeTok{drawPoints =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{pointSize =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+\end{verbatim}
+
+\label{fig:interactive}Discharge of the Poudre River in cubic feet per second from January 2017 to December 2021.
+
+\hypertarget{looking-at-effects-of-fire-on-vegetation}{%
+\chapter{Looking at Effects of Fire on Vegetation}\label{looking-at-effects-of-fire-on-vegetation}}
+
+\begin{quote}
+``What happens when a wildfire tells you a joke? You get burned!''
+\end{quote}
+
+This assignment demonstrates the benefit of visualizing data to see potential correlations.
+
+Data and assignment provided by Dr.~Matthew Ross and Dr.~Nathan Mueller of Colorado State University.
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+The Hayman Fire, started by arsen in summer of 2002, was the largest wildfire in Colorado history until the 2020 wildfire season. It burned a large area of over 138 thousand acres between the Kenosha Mountains and Pikes Peak, affecting wildlife and causing water quality concerns for the Front Range populations through damage to watersheds that contribute to the South Platte River.
+
+\hypertarget{what-is-the-correlation-between-ndvi-and-ndmi}{%
+\section{What is the correlation between NDVI and NDMI?}\label{what-is-the-correlation-between-ndvi-and-ndmi}}
+
+The Normalized Difference Vegetation Index (NDVI) is positively correlated with the Normalized Difference Moisture Index (NDMI). In everyday terms, NDVI indicates plant health as shown by how well leaves reflect near infrared and red light, while NDMI represents plant water content and is calculated from near infrared and short-wave infrared reflectance values (\href{https://www.agricolus.com/en/vegetation-indices-ndvi-ndmi/}{Agricolus, 2018}). These values can also tell us about how much vegetative cover there is at a given site, with the lowest NDVI (\textless0.1) and NDMI (\textless-0.8) values indicating bare soil.
+
+Not surprisingly, the plot below shows that canopy cover is greatly decreased for the burned site compared to the unburned site.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggplot of wide set in summer}
+\NormalTok{full\_wide }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(month }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{\textgreater{}=} \DecValTok{2002}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\FunctionTok{ggplot}\NormalTok{(., }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{ndmi,}\AttributeTok{y=}\NormalTok{ndvi, }\AttributeTok{color=}\NormalTok{treatment)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{shape=}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"NDMI"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"NDVI"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Burned vs. Unburned Vegetation"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_few}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{16}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{panel.grid.major=}\FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{panel.grid.minor=}\FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{\label{fig:unnamed-chunk-2}NDVI and NDMI values from 2002 to 2019 in Colorado sites that were burned (teal) or left unburned (orange) during the Hayman Fire.}
+\end{figure}
+
+As may be expected, vegetative growth (NDVI) is positively associated with the previous winter's snowfall, as shown in the plot below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggplot winter NDSI to summer NDVI}
+\FunctionTok{ggplot}\NormalTok{(ndvi\_ndsi, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ mean\_NDVI, }\AttributeTok{y =}\NormalTok{ mean\_NDSI)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{fill =} \StringTok{"blue"}\NormalTok{, }
+             \AttributeTok{shape =} \DecValTok{21}\NormalTok{, }
+             \AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{,}
+              \AttributeTok{se =} \ConstantTok{TRUE}\NormalTok{,}
+              \AttributeTok{lty =} \DecValTok{1}\NormalTok{,}
+              \AttributeTok{color =} \StringTok{"black"}\NormalTok{,}
+              \AttributeTok{fill =} \StringTok{"lightgrey"}\NormalTok{,}
+              \AttributeTok{size =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Mean NDSI"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Mean NDVI"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Winter NDSI vs. Summer NDVI"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_few}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{16}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{pretty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.4}\NormalTok{,}\FloatTok{0.5}\NormalTok{), }\AttributeTok{n =} \DecValTok{4}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{pretty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{,}\FloatTok{0.5}\NormalTok{), }\AttributeTok{n =} \DecValTok{6}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{panel.grid.major=}\FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{panel.grid.minor=}\FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{\label{fig:unnamed-chunk-3}Linear models for mean summer NDVI and mean winter NDSI for pre- and post-burn and burned and unburned sites.}
+\end{figure}
+
+\hypertarget{what-month-is-the-greenest-month-on-average}{%
+\section{What month is the greenest month on average?}\label{what-month-is-the-greenest-month-on-average}}
+
+If we plot monthly means of NDVI, we can see that the greenest month in Colorado is August.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#ggplot of monthly means}
+\NormalTok{monthly\_sum }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(data }\SpecialCharTok{==} \StringTok{"ndvi"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate\_at}\NormalTok{(}\FunctionTok{vars}\NormalTok{(month), }\FunctionTok{funs}\NormalTok{(factor)) }\SpecialCharTok{\%\textgreater{}\%}
+\FunctionTok{ggplot}\NormalTok{(., }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{month, }\AttributeTok{y=}\NormalTok{value\_mean, }\AttributeTok{fill=}\NormalTok{month)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin=}\NormalTok{value\_mean}\SpecialCharTok{{-}}\NormalTok{value\_std.error, }\AttributeTok{ymax=}\NormalTok{value\_mean}\SpecialCharTok{+}\NormalTok{value\_std.error), }
+                \AttributeTok{colour =} \StringTok{"black"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"5"}\OtherTok{=}\StringTok{"May"}\NormalTok{, }\StringTok{"6"}\OtherTok{=}\StringTok{"June"}\NormalTok{, }\StringTok{"7"}\OtherTok{=}\StringTok{"Jul."}\NormalTok{, }\StringTok{"8"}\OtherTok{=}\StringTok{"Aug."}\NormalTok{, }\StringTok{"9"}\OtherTok{=}\StringTok{"Sept."}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Month"}\NormalTok{) }\SpecialCharTok{+}  \FunctionTok{ylab}\NormalTok{(}\StringTok{"NDVI"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Average NDVI per Month"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_few}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Greens"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{panel.grid.major=}\FunctionTok{element\_blank}\NormalTok{(), }
+        \AttributeTok{panel.grid.minor=}\FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-4-1.pdf}
+\caption{\label{fig:unnamed-chunk-4}Mean NDVI and standard error per summer month across sites from 1984 to 2019.}
+\end{figure}
+
+\hypertarget{what-month-is-the-snowiest-on-average}{%
+\section{What month is the snowiest on average?}\label{what-month-is-the-snowiest-on-average}}
+
+If we plot the NDSI means for the winter months, we can see that the highest snowfall is January.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Change ordering manually and make month into factor}
+\NormalTok{monthly\_win}\SpecialCharTok{$}\NormalTok{month }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(monthly\_win}\SpecialCharTok{$}\NormalTok{month,   }
+                  \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"11"}\NormalTok{,}\StringTok{"12"}\NormalTok{, }\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"3"}\NormalTok{))}
+
+\NormalTok{monthly\_win }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(data }\SpecialCharTok{==} \StringTok{"ndsi"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\FunctionTok{ggplot}\NormalTok{(., }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{month,}\AttributeTok{y=}\NormalTok{value\_mean, }\AttributeTok{fill=}\NormalTok{month)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin=}\NormalTok{value\_mean}\SpecialCharTok{{-}}\NormalTok{value\_std.error, }\AttributeTok{ymax=}\NormalTok{value\_mean}\SpecialCharTok{+}\NormalTok{value\_std.error), }
+                \AttributeTok{colour =} \StringTok{"black"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"11"}\OtherTok{=}\StringTok{"Nov."}\NormalTok{, }\StringTok{"12"}\OtherTok{=}\StringTok{"Dec"}\NormalTok{, }\StringTok{"1"}\OtherTok{=}\StringTok{"Jan."}\NormalTok{, }\StringTok{"2"}\OtherTok{=}\StringTok{"Feb."}\NormalTok{, }
+                            \StringTok{"3"}\OtherTok{=}\StringTok{"Mar."}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Month"}\NormalTok{) }\SpecialCharTok{+}  \FunctionTok{ylab}\NormalTok{(}\StringTok{"NDSI"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Average NDSI per Month"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_few}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Purples"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{panel.grid.major=}\FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{panel.grid.minor=}\FunctionTok{element\_blank}\NormalTok{(), }
+        \AttributeTok{legend.position=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-5-1.pdf}
+\caption{\label{fig:unnamed-chunk-5}Mean NDSI and standard error per winter month across sites from 1984 to 2019.}
+\end{figure}
+
+\hypertarget{fire-effects-on-fish-populations}{%
+\chapter{Fire Effects on Fish Populations}\label{fire-effects-on-fish-populations}}
+
+Wildfires don't only impact vegetation, but a wide variety of abiotic and biotic elements of the ecosystem. In this assignment, I looked at how fish in the Cache La Poudre Watershed were impacted by the High Park Fire in 2012.
+
+Data and assignment provided by Dr.~Michael Lefsky of Colorado State University.
+
+\hypertarget{pre-versus-post-fire-fish-length-and-mass}{%
+\section{Pre versus post fire fish length and mass}\label{pre-versus-post-fire-fish-length-and-mass}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#summarize fishdata\_R by time (another way to do this without subsets)}
+\FunctionTok{summary}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"pre{-}fire"}\NormalTok{,])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      time             capture_id       length_cm         mass_g   
+##  Length:100         Min.   :  1.00   Min.   : 5.00   Min.   : 66  
+##  Class :character   1st Qu.: 25.75   1st Qu.:15.00   1st Qu.:132  
+##  Mode  :character   Median : 50.50   Median :18.00   Median :151  
+##                     Mean   : 50.50   Mean   :19.16   Mean   :154  
+##                     3rd Qu.: 75.25   3rd Qu.:23.00   3rd Qu.:182  
+##                     Max.   :100.00   Max.   :32.00   Max.   :252
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"post{-}fire"}\NormalTok{,])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      time             capture_id   length_cm         mass_g     
+##  Length:97          Min.   : 1   Min.   : 5.00   Min.   : 45.0  
+##  Class :character   1st Qu.:25   1st Qu.:15.00   1st Qu.: 89.0  
+##  Mode  :character   Median :49   Median :20.00   Median :113.0  
+##                     Mean   :49   Mean   :19.76   Mean   :107.9  
+##                     3rd Qu.:73   3rd Qu.:25.00   3rd Qu.:126.0  
+##                     Max.   :97   Max.   :38.00   Max.   :157.0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# create function to run statistics}
+\NormalTok{lab\_stats }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{c}\NormalTok{(}\FunctionTok{sd}\NormalTok{(x),}\FunctionTok{sd}\NormalTok{(x)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{,}\FunctionTok{sd}\NormalTok{(x)}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{length}\NormalTok{(x))) }\CommentTok{\#calculate standard deviation, variance, standard error. Return as vector}
+
+\CommentTok{\#Pre{-}fire statistics}
+\FunctionTok{lab\_stats}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"pre{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{length\_cm) }\CommentTok{\#fish length}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  6.2145479 38.6206061  0.6214548
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lab\_stats}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"pre{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{mass\_g) }\CommentTok{\#fish mass}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]   36.277409 1316.050404    3.627741
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Post{-}fire statistics}
+\FunctionTok{lab\_stats}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"post{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{length\_cm) }\CommentTok{\#fish length}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  7.0574624 49.8077749  0.7165767
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lab\_stats}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"post{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{mass\_g) }\CommentTok{\#fish mass}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1]  26.894853 723.333119   2.730759
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 1{-}way ANOVA on pre{-} vs. post{-}fire mass and length}
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{aov}\NormalTok{(fishdata\_4R}\SpecialCharTok{$}\NormalTok{length\_cm}\SpecialCharTok{\textasciitilde{}}\NormalTok{fishdata\_4R}\SpecialCharTok{$}\NormalTok{time)) }\CommentTok{\#ANOVA for fish length pre vs. post fire}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   Df Sum Sq Mean Sq F value Pr(>F)
+## fishdata_4R$time   1     18   17.90   0.406  0.525
+## Residuals        195   8605   44.13
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{aov}\NormalTok{(fishdata\_4R}\SpecialCharTok{$}\NormalTok{mass\_g}\SpecialCharTok{\textasciitilde{}}\NormalTok{fishdata\_4R}\SpecialCharTok{$}\NormalTok{time)) }\CommentTok{\#ANOVA for fish mass pre vs. post fire}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   Df Sum Sq Mean Sq F value Pr(>F)    
+## fishdata_4R$time   1 104798  104798   102.3 <2e-16 ***
+## Residuals        195 199729    1024                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Make a 2 x 2 matrix of histograms for pre{-} and post{-}fire mass and length}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#tell R how I want figures arranged}
+
+\CommentTok{\#Pre{-}fire histograms}
+\FunctionTok{hist}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"pre{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{length\_cm,}\AttributeTok{main=}\StringTok{"Pre{-}fire length (cm)"}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"Length (cm)"}\NormalTok{) }\CommentTok{\#fish length}
+\FunctionTok{hist}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"pre{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{mass\_g,}\AttributeTok{main=}\StringTok{"Pre{-}fire mass (g)"}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"Mass (g)"}\NormalTok{) }\CommentTok{\#fish mass}
+
+\CommentTok{\#Post{-}fire histograms}
+\FunctionTok{hist}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"post{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{length\_cm,}\AttributeTok{main=}\StringTok{"Post{-}fire length (cm)"}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"Length (cm)"}\NormalTok{) }\CommentTok{\#fish length}
+\FunctionTok{hist}\NormalTok{(fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"post{-}fire"}\NormalTok{,]}\SpecialCharTok{$}\NormalTok{mass\_g,}\AttributeTok{main=}\StringTok{"Post{-}fire mass (g)"}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"Mass (g)"}\NormalTok{) }\CommentTok{\#fish mass}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-7-1.pdf}
+\caption{\label{fig:unnamed-chunk-7}Histograms showing frequency of various lengths in centimeters and masses in grams of fish in in Cache La Poudre Watershed in 2012 before the High Park Fire (Pre-fire) and in 2013 after the High Park Fire (Post-fire).}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Make a 2 x 2 matrix of histograms for pre{-} and post{-}fire mass and length}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#tell R how I want figures arranged}
+
+\CommentTok{\# Make two boxplots side by side}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#tell R I want two plots}
+\FunctionTok{boxplot}\NormalTok{(fishdata\_4R}\SpecialCharTok{$}\NormalTok{length\_cm}\SpecialCharTok{\textasciitilde{}}\NormalTok{fishdata\_4R}\SpecialCharTok{$}\NormalTok{time, }\AttributeTok{main=}\StringTok{"Length (cm)"}\NormalTok{,}\AttributeTok{ylab =} \StringTok{"Frequency"}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"Time"}\NormalTok{) }\CommentTok{\#length fre and post fire}
+\FunctionTok{boxplot}\NormalTok{(fishdata\_4R}\SpecialCharTok{$}\NormalTok{mass\_g}\SpecialCharTok{\textasciitilde{}}\NormalTok{fishdata\_4R}\SpecialCharTok{$}\NormalTok{time, }\AttributeTok{main=}\StringTok{"Mass (g)"}\NormalTok{,}\AttributeTok{ylab =} \StringTok{"Frequency"}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"Time"}\NormalTok{) }\CommentTok{\#length fre and post fire}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-8-1.pdf}
+\caption{\label{fig:unnamed-chunk-8}Boxplots for fish length in centimeters and mass in grams pre and post fire.}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Reset setting for plots}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{)) }\CommentTok{\#return to single plot}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{linear-regression-of-fish-mass-vs.-length-for-before-and-after-the-fire}{%
+\section{Linear regression of fish mass vs.~length for before and after the fire}\label{linear-regression-of-fish-mass-vs.-length-for-before-and-after-the-fire}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Pre{-}fire}
+\CommentTok{\# Scatterplot of length and mass where length is the independent variable and mass is the response variable}
+\FunctionTok{plot}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ length\_cm, }\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"pre{-}fire"}\NormalTok{,], }\AttributeTok{xlab=}\StringTok{"Length (cm)"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Mass (g)"}\NormalTok{)}
+\FunctionTok{title}\NormalTok{(}\StringTok{"Pre{-}fire Fish Mass vs. Length"}\NormalTok{)}
+
+\CommentTok{\# Linear regression on mass vs.length}
+\NormalTok{lm\_pre }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ length\_cm,}\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"pre{-}fire"}\NormalTok{,])}
+\FunctionTok{abline}\NormalTok{(lm\_pre)  }\CommentTok{\#Adds the trendline to the regression scatterplot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-9-1.pdf}
+\caption{\label{fig:unnamed-chunk-9}Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire.}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{aov}\NormalTok{(lm\_pre)) }\CommentTok{\#shows the results of the pre{-}fire linear regression ANOVA}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value Pr(>F)    
+## length_cm    1 103690  103690     382 <2e-16 ***
+## Residuals   98  26599     271                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(lm\_pre) }\CommentTok{\#shows equation of the line, multiple R{-}squared value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm, data = fishdata_4R[fishdata_4R$time == 
+##     "pre-fire", ])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -28.987 -14.472  -0.307  12.543  31.144 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  54.2113     5.3641   10.11   <2e-16 ***
+## length_cm     5.2077     0.2664   19.55   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 16.47 on 98 degrees of freedom
+## Multiple R-squared:  0.7958, Adjusted R-squared:  0.7938 
+## F-statistic:   382 on 1 and 98 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Post{-}fire}
+\CommentTok{\# Scatterplot of length and mass where length is the independent variable and mass is the response variable}
+\FunctionTok{plot}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ length\_cm, }\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"post{-}fire"}\NormalTok{,], }\AttributeTok{xlab=}\StringTok{"Length (cm)"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Mass (g)"}\NormalTok{)}
+\FunctionTok{title}\NormalTok{(}\StringTok{"Post{-}fire Fish Mass vs. Length"}\NormalTok{)}
+
+\CommentTok{\# Linear regression on mass vs.length}
+\NormalTok{lm\_post }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ length\_cm,}\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time}\SpecialCharTok{==}\StringTok{"post{-}fire"}\NormalTok{,])}
+\FunctionTok{abline}\NormalTok{(lm\_post)  }\CommentTok{\#Adds the trendline to the regression scatterplot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-10-1.pdf}
+\caption{\label{fig:unnamed-chunk-10}Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2013 after the High Park Fire.}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{aov}\NormalTok{(lm\_post)) }\CommentTok{\#shows the results of the pre{-}fire linear regression ANOVA}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             Df Sum Sq Mean Sq F value   Pr(>F)    
+## length_cm    1  12126   12126    20.1 2.05e-05 ***
+## Residuals   95  57313     603                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(lm\_post) }\CommentTok{\#shows equation of the line, multiple R{-}squared value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = mass_g ~ length_cm, data = fishdata_4R[fishdata_4R$time == 
+##     "post-fire", ])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -49.048 -13.271  -3.011  19.582  46.952 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  76.3830     7.4498  10.253  < 2e-16 ***
+## length_cm     1.5925     0.3552   4.483 2.05e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 24.56 on 95 degrees of freedom
+## Multiple R-squared:  0.1746, Adjusted R-squared:  0.1659 
+## F-statistic:  20.1 on 1 and 95 DF,  p-value: 2.054e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Pre{-} and Post{-}Fire on same graph}
+
+\CommentTok{\# First plot the pre{-}fire linear regression}
+\CommentTok{\# ylim sets the range of the y{-}axis; pch="+" makes points appear as plus signs; col="blue" makes plus signs blue}
+\FunctionTok{plot}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{length\_cm,}\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"pre{-}fire"}\NormalTok{,],}\AttributeTok{xlab=}\StringTok{"Length (cm)"}\NormalTok{,}\AttributeTok{ylab=}\StringTok{"Mass (g)"}\NormalTok{,}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{260}\NormalTok{), }\AttributeTok{pch=}\StringTok{"+"}\NormalTok{, }\AttributeTok{col=}\StringTok{"blue"}\NormalTok{)    }
+\FunctionTok{title}\NormalTok{(}\StringTok{"Pre{-}Fire (+) and Post{-}Fire (o) Mass vs. Length"}\NormalTok{)}
+
+\CommentTok{\# Run linear regression of pre{-}fire mass and length to obtain the trend line.}
+\NormalTok{lm\_pre}\OtherTok{=}\FunctionTok{lm}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ length\_cm,}\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"pre{-}fire"}\NormalTok{,])}
+\FunctionTok{abline}\NormalTok{(lm\_pre,}\AttributeTok{col=}\StringTok{"blue"}\NormalTok{)   }\CommentTok{\#adds a trendline to the plot and makes the line blue}
+
+\CommentTok{\# Overlay the post{-}fire linear regression onto the plot of the pre{-}fire linear regression}
+\CommentTok{\# Plots post{-}fire data as o\textquotesingle{}s and colors them red}
+\FunctionTok{points}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{length\_cm,}\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"post{-}fire"}\NormalTok{,],}\AttributeTok{xlab=}\StringTok{"Length (cm)"}\NormalTok{,}\AttributeTok{ylab=}\StringTok{"Mass (g)"}\NormalTok{,}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{260}\NormalTok{),}\AttributeTok{col=}\StringTok{"red"}\NormalTok{)   }
+
+\CommentTok{\# Run linear regression of post{-}fire mass and length to obtain the trend line.}
+\NormalTok{lm\_post}\OtherTok{=}\FunctionTok{lm}\NormalTok{(mass\_g }\SpecialCharTok{\textasciitilde{}}\NormalTok{ length\_cm,}\AttributeTok{data=}\NormalTok{fishdata\_4R[fishdata\_4R}\SpecialCharTok{$}\NormalTok{time }\SpecialCharTok{==} \StringTok{"post{-}fire"}\NormalTok{,])}
+\FunctionTok{abline}\NormalTok{(lm\_post,}\AttributeTok{col=}\StringTok{"red"}\NormalTok{)   }\CommentTok{\#adds a trendline to the post{-}fire linear regression and makes the line red}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-11-1.pdf}
+\caption{\label{fig:unnamed-chunk-11}Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire (blue, +) and in 2013 after the High Park Fire (red, o).}
+\end{figure}
+
+\hypertarget{extracting-and-visualizing-meteorological-data}{%
+\chapter{Extracting and Visualizing Meteorological Data}\label{extracting-and-visualizing-meteorological-data}}
+
+\begin{quote}
+``What do you call dangerous precipitation? A rain of terror.''
+\end{quote}
+
+For this assignment, we used custom functions to read in and look at average meteorological data scraped from a public data archive.
+
+Data is from \href{https://snowstudies.org/archived-data/}{Snowstudies.org}. Assignment by Dr.~Matthew Ross and Dr.~Nathan Mueller of Colorado State University.
+
+\hypertarget{extract-the-meteorological-data-urls.-here-we-want-you-to-use-the-rvest-package-to-get-the-urls-for-the-sasp-forcing-and-sbsp_forcing-meteorological-datasets.}{%
+\section{\texorpdfstring{1. Extract the meteorological data URLs. Here we want you to use the \texttt{rvest} package to get the URLs for the \texttt{SASP\ forcing} and \texttt{SBSP\_forcing} meteorological datasets.}{1. Extract the meteorological data URLs. Here we want you to use the rvest package to get the URLs for the SASP forcing and SBSP\_forcing meteorological datasets.}}\label{extract-the-meteorological-data-urls.-here-we-want-you-to-use-the-rvest-package-to-get-the-urls-for-the-sasp-forcing-and-sbsp_forcing-meteorological-datasets.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Read HTML page }
+\NormalTok{snowarchive }\OtherTok{\textless{}{-}} \FunctionTok{read\_html}\NormalTok{(}\StringTok{"https://snowstudies.org/archived{-}data/"}\NormalTok{)}
+
+\CommentTok{\# Read link with specific pattern}
+\NormalTok{links }\OtherTok{\textless{}{-}}\NormalTok{ snowarchive }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{html\_nodes}\NormalTok{(}\StringTok{\textquotesingle{}a\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#look for links}
+\NormalTok{  .[}\FunctionTok{grepl}\NormalTok{(}\StringTok{\textquotesingle{}forcing\textquotesingle{}}\NormalTok{,.)] }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#filter to only links with "forcing" term}
+  \FunctionTok{html\_attr}\NormalTok{(}\StringTok{\textquotesingle{}href\textquotesingle{}}\NormalTok{) }\CommentTok{\#tell it these are urls}
+
+\NormalTok{links }\CommentTok{\# view}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "https://snowstudies.org/wp-content/uploads/2022/02/SBB_SASP_Forcing_Data.txt"
+## [2] "https://snowstudies.org/wp-content/uploads/2022/02/SBB_SBSP_Forcing_Data.txt"
+\end{verbatim}
+
+\hypertarget{download-the-meteorological-data.-use-the-download_file-and-str_split_fixed-commands-to-download-the-data-and-save-it-in-your-data-folder.-you-can-use-a-for-loop-or-a-map-function.}{%
+\section{\texorpdfstring{2. Download the meteorological data. Use the \texttt{download\_file} and \texttt{str\_split\_fixed} commands to download the data and save it in your data folder. You can use a for loop or a map function.}{2. Download the meteorological data. Use the download\_file and str\_split\_fixed commands to download the data and save it in your data folder. You can use a for loop or a map function.}}\label{download-the-meteorological-data.-use-the-download_file-and-str_split_fixed-commands-to-download-the-data-and-save-it-in-your-data-folder.-you-can-use-a-for-loop-or-a-map-function.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Grab only the name of the file by splitting out on forward slashes}
+\NormalTok{splits }\OtherTok{\textless{}{-}} \FunctionTok{str\_split\_fixed}\NormalTok{(links,}\StringTok{\textquotesingle{}/\textquotesingle{}}\NormalTok{,}\DecValTok{8}\NormalTok{)}
+
+\CommentTok{\#Keep only the 8th column}
+\NormalTok{files }\OtherTok{\textless{}{-}}\NormalTok{ splits[,}\DecValTok{8}\NormalTok{] }
+
+\NormalTok{files}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SBB_SASP_Forcing_Data.txt" "SBB_SBSP_Forcing_Data.txt"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate a file list for where the data goes}
+\NormalTok{file\_names }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}Data\_sci\_bookdown/data/snow/\textquotesingle{}}\NormalTok{, files)}
+
+\CommentTok{\# For loop that downloads each {-} i for every instance, length function tells how many instances}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(file\_names))\{}
+  \FunctionTok{download.file}\NormalTok{(links[i],}\AttributeTok{destfile=}\NormalTok{file\_names[i])}
+\NormalTok{\}}
+
+\CommentTok{\# Download via map function}
+\CommentTok{\#map2(links, file\_names, download.file)}
+
+\CommentTok{\# Map version of the for loop (downloading files)}
+\NormalTok{downloaded }\OtherTok{\textless{}{-}} \FunctionTok{file.exists}\NormalTok{(file\_names) }
+\NormalTok{evaluate }\OtherTok{\textless{}{-}} \SpecialCharTok{!}\FunctionTok{all}\NormalTok{(downloaded) }\CommentTok{\# sees if files are downloaded (T/F)}
+\ControlFlowTok{if}\NormalTok{(evaluate }\SpecialCharTok{==}\NormalTok{ T)\{}
+  \FunctionTok{map2}\NormalTok{(links[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{],file\_names[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{],download.file)}
+\NormalTok{\}}\ControlFlowTok{else}\NormalTok{\{}\FunctionTok{print}\NormalTok{(}\StringTok{\textquotesingle{}data downloaded\textquotesingle{}}\NormalTok{)\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data downloaded"
+\end{verbatim}
+
+\hypertarget{write-a-custom-function-to-read-in-the-data-and-append-a-site-column-to-the-data.}{%
+\section{3. Write a custom function to read in the data and append a site column to the data.}\label{write-a-custom-function-to-read-in-the-data-and-append-a-site-column-to-the-data.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Traditional read in}
+
+\NormalTok{SASP }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"Data\_sci\_bookdown/data/snow/SBB\_SASP\_Forcing\_Data.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+  
+\FunctionTok{colnames}\NormalTok{(SASP) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"year"}\NormalTok{,}\StringTok{"month"}\NormalTok{,}\StringTok{"day"}\NormalTok{,}\StringTok{"precip"}\NormalTok{,}\StringTok{"temp"}\NormalTok{)}
+
+\NormalTok{SBSP }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"Data\_sci\_bookdown/data/snow/SBB\_SBSP\_Forcing\_Data.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+  
+\FunctionTok{colnames}\NormalTok{(SBSP) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"year"}\NormalTok{,}\StringTok{"month"}\NormalTok{,}\StringTok{"day"}\NormalTok{,}\StringTok{"precip"}\NormalTok{,}\StringTok{"temp"}\NormalTok{)}
+
+\CommentTok{\# Combine csvs}
+\NormalTok{alldata }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(SASP,SBSP)}
+
+\CommentTok{\# Read in via new function}
+
+\CommentTok{\# Grab headers from metadata pdf}
+\FunctionTok{library}\NormalTok{(pdftools)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Using poppler version 20.12.1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{headers }\OtherTok{\textless{}{-}} \FunctionTok{pdf\_text}\NormalTok{(}\StringTok{\textquotesingle{}https://snowstudies.org/wp{-}content/uploads/2022/02/Serially{-}Complete{-}Metadata{-}text08.pdf\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  readr}\SpecialCharTok{::}\FunctionTok{read\_lines}\NormalTok{(.) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{trimws}\NormalTok{(.) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{str\_split\_fixed}\NormalTok{(.,}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{.\textquotesingle{}}\NormalTok{,}\DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  .[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  .[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{26}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{str\_trim}\NormalTok{(}\AttributeTok{side =} \StringTok{"left"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{use-the-map-function-to-read-in-both-meteorological-files.-display-a-summary-of-your-tibble.}{%
+\section{\texorpdfstring{4. Use the \texttt{map} function to read in both meteorological files. Display a summary of your tibble.}{4. Use the map function to read in both meteorological files. Display a summary of your tibble.}}\label{use-the-map-function-to-read-in-both-meteorological-files.-display-a-summary-of-your-tibble.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Pull site name out of the file name and read in the .txt files}
+\NormalTok{read\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file)\{}
+\NormalTok{  name }\OtherTok{=} \FunctionTok{str\_split\_fixed}\NormalTok{(file,}\StringTok{\textquotesingle{}\_\textquotesingle{}}\NormalTok{,}\DecValTok{2}\NormalTok{)[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{gsub}\NormalTok{(}\StringTok{\textquotesingle{}\_Forcing\_Data.txt\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{,.) }
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{read\_fwf}\NormalTok{(file) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{select}\NormalTok{(}\AttributeTok{year=}\DecValTok{1}\NormalTok{, }\AttributeTok{month=}\DecValTok{2}\NormalTok{, }\AttributeTok{day=}\DecValTok{3}\NormalTok{, }\AttributeTok{hour=}\DecValTok{4}\NormalTok{, }\AttributeTok{precip=}\DecValTok{7}\NormalTok{, }\AttributeTok{air\_temp=}\DecValTok{10}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#choose and name columns}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{site =}\NormalTok{ name) }\CommentTok{\#add column }
+\NormalTok{\}}
+
+\NormalTok{alldata2 }\OtherTok{\textless{}{-}} \FunctionTok{map\_dfr}\NormalTok{(file\_names,read\_data) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 69168 Columns: 19
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## 
+## chr  (2): X12, X14
+## dbl (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X13, X15, X16, X17, ...
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 69168 Columns: 19
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## 
+## chr  (2): X12, X14
+## dbl (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X13, X15, X16, X17, ...
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(alldata2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       year          month             day             hour      
+##  Min.   :2003   Min.   : 1.000   Min.   : 1.00   Min.   : 0.00  
+##  1st Qu.:2005   1st Qu.: 3.000   1st Qu.: 8.00   1st Qu.: 5.75  
+##  Median :2007   Median : 6.000   Median :16.00   Median :11.50  
+##  Mean   :2007   Mean   : 6.472   Mean   :15.76   Mean   :11.50  
+##  3rd Qu.:2009   3rd Qu.: 9.000   3rd Qu.:23.00   3rd Qu.:17.25  
+##  Max.   :2011   Max.   :12.000   Max.   :31.00   Max.   :23.00  
+##      precip             air_temp         site          
+##  Min.   :0.000e+00   Min.   :242.1   Length:138336     
+##  1st Qu.:0.000e+00   1st Qu.:265.8   Class :character  
+##  Median :0.000e+00   Median :272.6   Mode  :character  
+##  Mean   :3.838e-05   Mean   :272.6                     
+##  3rd Qu.:0.000e+00   3rd Qu.:279.7                     
+##  Max.   :6.111e-03   Max.   :295.8
+\end{verbatim}
+
+\hypertarget{make-a-line-plot-of-mean-temp-by-year-by-site-using-the-air-temp-k-variable.-is-there-anything-suspicious-in-the-plot-adjust-your-filtering-if-needed.}{%
+\section{\texorpdfstring{5. Make a line plot of mean temp by year by site (using the \texttt{air\ temp\ {[}K{]}} variable). Is there anything suspicious in the plot? Adjust your filtering if needed.}{5. Make a line plot of mean temp by year by site (using the air temp {[}K{]} variable). Is there anything suspicious in the plot? Adjust your filtering if needed.}}\label{make-a-line-plot-of-mean-temp-by-year-by-site-using-the-air-temp-k-variable.-is-there-anything-suspicious-in-the-plot-adjust-your-filtering-if-needed.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{temp\_yearly }\OtherTok{\textless{}{-}}\NormalTok{ alldata2 }\SpecialCharTok{\%\textgreater{}\%} 
+\FunctionTok{group\_by}\NormalTok{(year, site) }\SpecialCharTok{\%\textgreater{}\%}
+\FunctionTok{summarise}\NormalTok{(}\AttributeTok{mean\_temp =} \FunctionTok{mean}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{air\_temp}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm=}\NormalTok{T))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'year'. You can override using the `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(temp\_yearly,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{year, }\AttributeTok{y=}\NormalTok{mean\_temp, }\AttributeTok{color=}\NormalTok{site)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Year"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Mean Temperature (Degrees Kelvin)"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{  ggthemes}\SpecialCharTok{::}\FunctionTok{theme\_few}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{pretty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{2003}\NormalTok{,}\DecValTok{2012}\NormalTok{), }\AttributeTok{n =} \DecValTok{6}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-16-1.pdf}
+\caption{\label{fig:unnamed-chunk-16}Mean temperature of the SASP (teal) and SBSP (orange) sites from 2003 to 2012, in degrees Kelvin.}
+\end{figure}
+
+\hypertarget{write-a-function-that-makes-line-plots-of-monthly-average-temperature-at-each-site-for-a-given-year.-use-a-for-loop-to-make-these-plots-for-2005-to-2010.}{%
+\section{6. Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010.}\label{write-a-function-that-makes-line-plots-of-monthly-average-temperature-at-each-site-for-a-given-year.-use-a-for-loop-to-make-these-plots-for-2005-to-2010.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{temp\_monthly }\OtherTok{\textless{}{-}}\NormalTok{ alldata2 }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(year, month, site) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}\AttributeTok{mean\_temp =} \FunctionTok{mean}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{air\_temp}\StringTok{\textasciigrave{}}\NormalTok{, }\AttributeTok{na.rm=}\NormalTok{T))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'year', 'month'. You can override using the `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+
+\NormalTok{plot\_monthly }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(year.no) \{}
+\NormalTok{  plot }\OtherTok{\textless{}{-}}\NormalTok{ temp\_monthly }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{==}\NormalTok{ year.no) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{month, }\AttributeTok{y=}\NormalTok{mean\_temp, }\AttributeTok{color=}\NormalTok{site)) }\SpecialCharTok{+} 
+      \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{xlab}\NormalTok{(}\StringTok{"Month"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Mean Temperature (Degrees Kelvin)"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{      ggthemes}\SpecialCharTok{::}\FunctionTok{theme\_few}\NormalTok{() }\SpecialCharTok{+} 
+      \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\SpecialCharTok{+} 
+      \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{12}\NormalTok{)) }\SpecialCharTok{+}
+      \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{pretty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{255}\NormalTok{,}\DecValTok{290}\NormalTok{), }\AttributeTok{n =} \DecValTok{4}\NormalTok{)) }\SpecialCharTok{+}
+      \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{)}
+  \FunctionTok{print}\NormalTok{(plot)}
+\NormalTok{  \}}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{2005}\SpecialCharTok{:}\DecValTok{2010}\NormalTok{)\{}
+  \FunctionTok{plot\_monthly}\NormalTok{(i)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-17-1.pdf} \includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-17-2.pdf} \includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-17-3.pdf} \includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-17-4.pdf} \includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-17-5.pdf} \includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-17-6.pdf}
+
+\hypertarget{bonus-make-a-plot-of-average-daily-precipitation-by-day-of-year-averaged-across-all-available-years}{%
+\section{Bonus: Make a plot of average daily precipitation by day of year (averaged across all available years)}\label{bonus-make-a-plot-of-average-daily-precipitation-by-day-of-year-averaged-across-all-available-years}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{precip\_daily }\OtherTok{\textless{}{-}}\NormalTok{ alldata2 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{date =} \FunctionTok{make\_date}\NormalTok{(year, month, day),}
+                \AttributeTok{day\_no =} \FunctionTok{yday}\NormalTok{(date)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(day\_no) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{mean\_precip =} \FunctionTok{mean}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{precip}\StringTok{\textasciigrave{}}\SpecialCharTok{*}\DecValTok{86400}\NormalTok{, }\AttributeTok{na.rm=}\NormalTok{T))}
+
+\FunctionTok{ggplot}\NormalTok{(precip\_daily, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{day\_no, }\AttributeTok{y=}\NormalTok{mean\_precip)) }\SpecialCharTok{+} 
+      \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+      \FunctionTok{xlab}\NormalTok{(}\StringTok{"Day of Year"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Mean Precipitation (mm/day)"}\NormalTok{) }\SpecialCharTok{+}
+\NormalTok{      ggthemes}\SpecialCharTok{::}\FunctionTok{theme\_few}\NormalTok{() }\SpecialCharTok{+} 
+      \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\SpecialCharTok{+} 
+      \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{pretty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{14}\NormalTok{), }\AttributeTok{n =} \DecValTok{7}\NormalTok{)) }\SpecialCharTok{+}
+      \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \FunctionTok{pretty}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{365}\NormalTok{), }\AttributeTok{n =} \DecValTok{8}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-18-1.pdf}
+\caption{\label{fig:unnamed-chunk-18}Mean daily precipitation by day of year, averaged from 2003 to 2012.}
+\end{figure}
+
+\hypertarget{spatial-analysis-in-r}{%
+\chapter{Spatial Analysis in R}\label{spatial-analysis-in-r}}
+
+\begin{quote}
+``Why are latitude and longitude so smart? Because they have so many degrees!''
+\end{quote}
+
+In this assignment, I learned to use R for spatial analyses.
+
+Data is from the \href{https://lagoslakes.org/}{LAGOS dataset}. Assignment by Dr.~Matthew Ross and Dr.~Nathan Mueller of Colorado State University.
+
+\hypertarget{loading-in-data}{%
+\section{Loading in data}\label{loading-in-data}}
+
+\hypertarget{first-download-and-then-specifically-grab-the-locus-or-site-lat-longs}{%
+\subsection{First download and then specifically grab the locus (or site lat longs)}\label{first-download-and-then-specifically-grab-the-locus-or-site-lat-longs}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# \#Lagos download script}
+\CommentTok{\#LAGOSNE::lagosne\_get(dest\_folder = LAGOSNE:::lagos\_path(), overwrite = TRUE)}
+
+
+\CommentTok{\#Load in lagos}
+\NormalTok{lagos }\OtherTok{\textless{}{-}} \FunctionTok{lagosne\_load}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in (function (version = NULL, fpath = NA) : LAGOSNE version unspecified,
+## loading version: 1.087.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Grab the lake centroid info}
+\NormalTok{lake\_centers }\OtherTok{\textless{}{-}}\NormalTok{ lagos}\SpecialCharTok{$}\NormalTok{locus}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{convert-to-spatial-data}{%
+\subsection{Convert to spatial data}\label{convert-to-spatial-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Look at the column names}
+\CommentTok{\#names(lake\_centers)}
+
+\CommentTok{\#Look at the structure}
+\CommentTok{\#str(lake\_centers)}
+
+\CommentTok{\#View the full dataset}
+\CommentTok{\#View(lake\_centers \%\textgreater{}\% slice(1:100))}
+
+\NormalTok{spatial\_lakes }\OtherTok{\textless{}{-}} \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{x =}\NormalTok{ lake\_centers, }\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"nhd\_long"}\NormalTok{,}\StringTok{"nhd\_lat"}\NormalTok{), }\AttributeTok{crs =} \DecValTok{4326}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\DecValTok{2163}\NormalTok{)}
+
+\CommentTok{\#mapview(spatial\_lakes)}
+
+\CommentTok{\#Subset for plotting}
+\NormalTok{subset\_spatial }\OtherTok{\textless{}{-}}\NormalTok{ spatial\_lakes }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{slice}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{100}\NormalTok{) }
+
+\NormalTok{subset\_baser }\OtherTok{\textless{}{-}}\NormalTok{ spatial\_lakes[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{100}\NormalTok{,]}
+
+\CommentTok{\#Dynamic mapviewer}
+\CommentTok{\#mapview(subset\_spatial)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{subset-to-only-minnesota}{%
+\subsection{Subset to only Minnesota}\label{subset-to-only-minnesota}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{states }\OtherTok{\textless{}{-}} \FunctionTok{us\_states}\NormalTok{()}
+
+\CommentTok{\#Plot all the states to check if they loaded}
+\CommentTok{\#mapview(states)}
+
+\NormalTok{minnesota }\OtherTok{\textless{}{-}}\NormalTok{ states }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(name }\SpecialCharTok{==} \StringTok{\textquotesingle{}Minnesota\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\DecValTok{2163}\NormalTok{)}
+\CommentTok{\#mapview(minnesota)}
+
+\CommentTok{\#Subset lakes based on spatial position}
+\NormalTok{minnesota\_lakes }\OtherTok{\textless{}{-}}\NormalTok{ spatial\_lakes[minnesota,]}
+
+\CommentTok{\#Plotting the first 1000 lakes}
+\NormalTok{minnesota\_lakes }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{lake\_area\_ha) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{slice}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Simple feature collection with 1000 features and 16 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 254441 ymin: -154522.4 xmax: 755222.3 ymax: 464949.4
+## Projected CRS: NAD27 / US National Atlas Equal Area
+## First 10 features:
+##    lagoslakeid     nhdid           gnis_name lake_area_ha lake_perim_meters
+## 1        15162 123319728   Lake of the Woods   123779.817         401005.02
+## 2        34986 105567868      Lower Red Lake    66650.332         115825.47
+## 3         2498 120019294     Mille Lacs Lake    51867.225         151701.94
+## 4        39213 105567402      Upper Red Lake    48288.325          99828.05
+## 5          996 120018981          Leech Lake    41824.352         344259.98
+## 6          583 120019513 Lake Winnibigoshish    22566.124          86722.10
+## 7           73 120019354          Rainy Lake    18522.551         660313.32
+## 8         2554 105954753      Vermilion Lake    15736.590         509617.01
+## 9         2161 120019371     Kabetogama Lake     9037.249         288750.31
+## 10        3119 166868528           Cass Lake     8375.173          85326.14
+##    nhd_fcode nhd_ftype iws_zoneid hu4_zoneid hu6_zoneid hu8_zoneid hu12_zoneid
+## 1      39004       390  IWS_37547     HU4_26     HU6_36    HU8_468  HU12_13912
+## 2      39004       390  IWS_34899     HU4_54     HU6_74    HU8_327  HU12_14600
+## 3      39004       390  IWS_22933     HU4_25     HU6_73    HU8_344  HU12_10875
+## 4      39004       390  IWS_33471     HU4_54     HU6_74    HU8_327  HU12_14204
+## 5      39004       390  IWS_23572     HU4_25     HU6_35    HU8_332  HU12_14479
+## 6      39004       390  IWS_22455     HU4_25     HU6_35    HU8_331  HU12_14543
+## 7      39004       390  IWS_37542     HU4_26     HU6_36    HU8_473  HU12_13942
+## 8      39004       390  IWS_36424     HU4_26     HU6_36    HU8_131  HU12_14405
+## 9      39004       390  IWS_36301     HU4_26     HU6_36    HU8_130  HU12_14395
+## 10     39004       390  IWS_21080     HU4_25     HU6_35    HU8_331  HU12_13957
+##    edu_zoneid county_zoneid state_zoneid elevation_m                  geometry
+## 1      EDU_56    County_435     State_14    323.5090 POINT (366706.2 464949.4)
+## 2      EDU_16    County_455     State_14    358.1656 POINT (371974.2 341706.5)
+## 3      EDU_43    County_484     State_14    381.7920 POINT (489582.1 157109.5)
+## 4      EDU_16    County_455     State_14    358.3096 POINT (389013.3 360819.5)
+## 5      EDU_42    County_424     State_14    395.2420 POINT (422409.7 255724.9)
+## 6      EDU_42    County_424     State_14    396.1560   POINT (437872.1 286675)
+## 7      EDU_55    County_446     State_14    338.0670 POINT (515833.6 420274.2)
+## 8       EDU_3    County_446     State_14    414.1680 POINT (566966.7 347059.1)
+## 9      EDU_55    County_446     State_14    339.2530 POINT (519199.2 408290.2)
+## 10     EDU_42    County_424     State_14    396.7710 POINT (410563.2 281005.2)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \CommentTok{\#mapview(.,zcol = \textquotesingle{}lake\_area\_ha\textquotesingle{})}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{show-a-map-outline-of-iowa-and-illinois-similar-to-minnesota-map-upstream}{%
+\section{1) Show a map outline of Iowa and Illinois (similar to Minnesota map upstream)}\label{show-a-map-outline-of-iowa-and-illinois-similar-to-minnesota-map-upstream}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Istates }\OtherTok{\textless{}{-}}\NormalTok{ states }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(name }\SpecialCharTok{==} \StringTok{\textquotesingle{}Iowa\textquotesingle{}}\SpecialCharTok{|}\NormalTok{ name}\SpecialCharTok{==} \StringTok{\textquotesingle{}Illinois\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\DecValTok{2163}\NormalTok{)}
+\FunctionTok{mapview}\NormalTok{(Istates, }\AttributeTok{canvas =} \ConstantTok{TRUE}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{subset-lagos-data-to-these-sites-how-many-sites-are-in-illinois-and-iowa-combined-how-does-this-compare-to-minnesota}{%
+\section{2) Subset LAGOS data to these sites, how many sites are in Illinois and Iowa combined? How does this compare to Minnesota?}\label{subset-lagos-data-to-these-sites-how-many-sites-are-in-illinois-and-iowa-combined-how-does-this-compare-to-minnesota}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Istates\_lakes }\OtherTok{\textless{}{-}}\NormalTok{ spatial\_lakes[Istates,]}
+
+\FunctionTok{nrow}\NormalTok{(Istates\_lakes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16466
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Istates\_count }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(Istates\_lakes}\SpecialCharTok{$}\NormalTok{lagoslakeid)}
+
+\FunctionTok{nrow}\NormalTok{(minnesota\_lakes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 29038
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Minn\_count }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(minnesota\_lakes}\SpecialCharTok{$}\NormalTok{lagoslakeid)}
+\end{Highlighting}
+\end{Shaded}
+
+Iowa and Illinois have 16466 lakes combined, much less than the number of lakes that Minnesota alone has, 29038.
+
+\hypertarget{what-is-the-distribution-of-lake-size-in-iowa-vs.-minnesota}{%
+\section{3) What is the distribution of lake size in Iowa vs.~Minnesota?}\label{what-is-the-distribution-of-lake-size-in-iowa-vs.-minnesota}}
+
+\begin{itemize}
+\tightlist
+\item
+  Here I want to see a histogram plot with lake size on x-axis and frequency on y axis (check out geom\_histogram)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{iowa }\OtherTok{\textless{}{-}}\NormalTok{ states }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(name }\SpecialCharTok{==} \StringTok{\textquotesingle{}Iowa\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\DecValTok{2163}\NormalTok{)}
+
+\NormalTok{iowa\_lakes }\OtherTok{\textless{}{-}}\NormalTok{ spatial\_lakes[iowa,]}
+
+\NormalTok{combined }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(iowa\_lakes, minnesota\_lakes)}
+
+\FunctionTok{ggplot}\NormalTok{(combined, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{ lake\_area\_ha)) }\SpecialCharTok{+} 
+\NormalTok{  ggthemes}\SpecialCharTok{::}\FunctionTok{theme\_few}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position=}\StringTok{"bottom"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"Lake Area (ha)"}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{ylab}\NormalTok{(}\StringTok{"Count"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{, }\AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{comma) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{data =}\NormalTok{ minnesota\_lakes, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{data =}\NormalTok{ iowa\_lakes, }\AttributeTok{color =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{,}\StringTok{"red"}\NormalTok{), }\StringTok{"State"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{figure}
+\centering
+\includegraphics{Rportfolio-bookdown_files/figure-latex/unnamed-chunk-23-1.pdf}
+\caption{\label{fig:unnamed-chunk-23}The number of lakes with a given area, in hectares, in Minnesota (red) and Iowa (blue).}
+\end{figure}
+
+\hypertarget{make-an-interactive-plot-of-lakes-in-iowa-and-illinois-and-color-them-by-lake-area-in-hectares}{%
+\section{4) Make an interactive plot of lakes in Iowa and Illinois and color them by lake area in hectares}\label{make-an-interactive-plot-of-lakes-in-iowa-and-illinois-and-color-them-by-lake-area-in-hectares}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Istates\_map }\OtherTok{=}\NormalTok{ Istates\_lakes }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{lake\_area\_ha) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{slice}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{1000}\NormalTok{)}
+
+\FunctionTok{mapview}\NormalTok{(Istates\_map, }\AttributeTok{zcol =} \StringTok{\textquotesingle{}lake\_area\_ha\textquotesingle{}}\NormalTok{,  }\AttributeTok{canvas =} \ConstantTok{TRUE}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{what-other-data-sources-might-we-use-to-understand-how-reservoirs-and-natural-lakes-vary-in-size-in-these-three-states}{%
+\section{5) What other data sources might we use to understand how reservoirs and natural lakes vary in size in these three states?}\label{what-other-data-sources-might-we-use-to-understand-how-reservoirs-and-natural-lakes-vary-in-size-in-these-three-states}}
+
+We might use the US Geological Survey (USGS) National Water Informational System (NWIS) and its National Water Dashboard as a data source, and look at gage height (indicating lake depth) as another parameter for lake size variation. The USGS National Hydrography Dataset (NHD) is another data source that would, similarly to Lagos, give us a surface area metric for lakes in the various states.
 
   \bibliography{packages.bib}
 

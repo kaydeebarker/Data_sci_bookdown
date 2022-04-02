@@ -1,0 +1,184 @@
+# Extracting and Visualizing Meteorological Data
+
+>"What do you call dangerous precipitation? A rain of terror."
+
+For this assignment, we used custom functions to read in and look at average meteorological data scraped from a public data archive.
+
+Data is from [Snowstudies.org](https://snowstudies.org/archived-data/). Assignment by Dr. Matthew Ross and Dr. Nathan Mueller of Colorado State University.
+
+```{r Ch5 setup, include=FALSE}
+library(rvest)
+library(tidyverse)
+library(lubridate)
+library(readxl)
+
+```
+
+## 1. Extract the meteorological data URLs. Here we want you to use the `rvest` package to get the URLs for the `SASP forcing` and `SBSP_forcing` meteorological datasets.
+
+```{r, warning=FALSE}
+
+# Read HTML page 
+snowarchive <- read_html("https://snowstudies.org/archived-data/")
+
+# Read link with specific pattern
+links <- snowarchive %>%
+  html_nodes('a') %>% #look for links
+  .[grepl('forcing',.)] %>% #filter to only links with "forcing" term
+  html_attr('href') #tell it these are urls
+
+links # view
+
+```
+
+## 2. Download the meteorological data. Use the `download_file` and `str_split_fixed` commands to download the data and save it in your data folder. You can use a for loop or a map function. 
+
+```{r, warning=FALSE}
+
+# Grab only the name of the file by splitting out on forward slashes
+splits <- str_split_fixed(links,'/',8)
+
+#Keep only the 8th column
+files <- splits[,8] 
+
+files
+
+# Generate a file list for where the data goes
+file_names <- paste0('Data_sci_bookdown/data/snow/', files)
+
+# For loop that downloads each - i for every instance, length function tells how many instances
+for(i in 1:length(file_names)){
+  download.file(links[i],destfile=file_names[i])
+}
+
+# Download via map function
+#map2(links, file_names, download.file)
+
+# Map version of the for loop (downloading files)
+downloaded <- file.exists(file_names) 
+evaluate <- !all(downloaded) # sees if files are downloaded (T/F)
+if(evaluate == T){
+  map2(links[1:2],file_names[1:2],download.file)
+}else{print('data downloaded')}
+
+```
+
+## 3. Write a custom function to read in the data and append a site column to the data. 
+
+```{r, warning=FALSE}
+
+# Traditional read in
+
+SASP <- read.csv("Data_sci_bookdown/data/snow/SBB_SASP_Forcing_Data.csv") %>%
+  select(1,2,3,7,10)
+  
+colnames(SASP) <- c("year","month","day","precip","temp")
+
+SBSP <- read.csv("Data_sci_bookdown/data/snow/SBB_SBSP_Forcing_Data.csv") %>%
+  select(1,2,3,7,10)
+  
+colnames(SBSP) <- c("year","month","day","precip","temp")
+
+# Combine csvs
+alldata <- rbind(SASP,SBSP)
+
+# Read in via new function
+
+# Grab headers from metadata pdf
+library(pdftools)
+headers <- pdf_text('https://snowstudies.org/wp-content/uploads/2022/02/Serially-Complete-Metadata-text08.pdf') %>%
+  readr::read_lines(.) %>%
+  trimws(.) %>%
+  str_split_fixed(.,'\\.',2) %>%
+  .[,2] %>%
+  .[1:26] %>%
+  str_trim(side = "left")
+
+```
+
+## 4. Use the `map` function to read in both meteorological files. Display a summary of your tibble.
+
+```{r, warning=FALSE}
+
+# Pull site name out of the file name and read in the .txt files
+read_data <- function(file){
+  name = str_split_fixed(file,'_',2)[,2] %>% 
+    gsub('_Forcing_Data.txt','',.) 
+  df <- read_fwf(file) %>% 
+    select(year=1, month=2, day=3, hour=4, precip=7, air_temp=10) %>% #choose and name columns
+    mutate(site = name) #add column 
+}
+
+alldata2 <- map_dfr(file_names,read_data) 
+
+summary(alldata2)
+
+```
+
+## 5. Make a line plot of mean temp by year by site (using the `air temp [K]` variable). Is there anything suspicious in the plot? Adjust your filtering if needed.
+
+```{r, warning=FALSE, fig.cap="Mean temperature of the SASP (teal) and SBSP (orange) sites from 2003 to 2012, in degrees Kelvin."}
+
+temp_yearly <- alldata2 %>% 
+group_by(year, site) %>%
+summarise(mean_temp = mean(`air_temp`, na.rm=T))
+
+ggplot(temp_yearly,aes(x=year, y=mean_temp, color=site)) + 
+  geom_point() + geom_line() +
+  xlab("Year") + ylab("Mean Temperature (Degrees Kelvin)") +
+  ggthemes::theme_few() + 
+  scale_color_brewer(palette = "Set2") + 
+  scale_x_continuous(breaks = pretty(c(2003,2012), n = 6)) +
+  theme(legend.position="bottom")
+
+```
+
+## 6. Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. 
+
+```{r, warning=FALSE, fig.cap="Mean monthly temperatures in degrees Kelvin for SASP (teal) and SBSP (orange) sites in 2005, 2006, 2007, 2008, 2009, and 2010."}
+
+temp_monthly <- alldata2 %>%
+    group_by(year, month, site) %>%
+    summarize(mean_temp = mean(`air_temp`, na.rm=T))
+
+par(mfrow=c(5,1))
+
+plot_monthly <- function(year.no) {
+  plot <- temp_monthly %>%
+    filter(year == year.no) %>%
+    ggplot(aes(x=month, y=mean_temp, color=site)) + 
+      geom_line() +
+      xlab("Month") + ylab("Mean Temperature (Degrees Kelvin)") +
+      ggthemes::theme_few() + 
+      scale_color_brewer(palette = "Set2") + 
+      scale_x_discrete(limits = c(1,2,3,4,5,6,7,8,9,10,11,12)) +
+      scale_y_continuous(breaks = pretty(c(255,290), n = 4)) +
+      theme(legend.position="bottom")
+  print(plot)
+  }
+
+for(i in 2005:2010){
+  plot_monthly(i)
+}
+
+```
+
+## Bonus: Make a plot of average daily precipitation by day of year (averaged across all available years)
+
+```{r, warning=FALSE, fig.cap="Mean daily precipitation by day of year, averaged from 2003 to 2012."}
+
+precip_daily <- alldata2 %>%
+  mutate(date = make_date(year, month, day),
+                day_no = yday(date)) %>%
+  group_by(day_no) %>%
+  summarize(mean_precip = mean(`precip`*86400, na.rm=T))
+
+ggplot(precip_daily, aes(x=day_no, y=mean_precip)) + 
+      geom_line() +
+      xlab("Day of Year") + ylab("Mean Precipitation (mm/day)") +
+      ggthemes::theme_few() + 
+      scale_color_brewer(palette = "Set2") + 
+      scale_y_continuous(breaks = pretty(c(0,14), n = 7)) +
+      scale_x_continuous(breaks = pretty(c(1,365), n = 8))
+
+```

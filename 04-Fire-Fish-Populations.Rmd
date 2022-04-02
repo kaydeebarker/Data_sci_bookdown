@@ -1,0 +1,131 @@
+# Fire Effects on Fish Populations
+
+Wildfires don't only impact vegetation, but a wide variety of abiotic and biotic elements of the ecosystem. In this assignment, I looked at how fish in the Cache La Poudre Watershed were impacted by the High Park Fire in 2012.
+
+Data and assignment provided by Dr. Michael Lefsky of Colorado State University.
+
+```{r Ch4 setup, warning=FALSE, echo=FALSE, message=FALSE}
+
+knitr::opts_knit$set(root.dir='..')
+library(tidyverse)
+library(tidyr)
+library(ggthemes)
+library(emmeans)
+library(plotrix)
+library(lubridate)
+
+# Load dataset
+fishdata_4R <- read_csv('Data_sci_bookdown/data/fish-fire/fishdata_4R.csv')
+
+```
+
+## Pre versus post fire fish length and mass
+```{r, warning=FALSE}
+
+#summarize fishdata_R by time (another way to do this without subsets)
+summary(fishdata_4R[fishdata_4R$time=="pre-fire",])
+summary(fishdata_4R[fishdata_4R$time=="post-fire",])
+
+# create function to run statistics
+lab_stats <- function(x) c(sd(x),sd(x)^2,sd(x)/sqrt(length(x))) #calculate standard deviation, variance, standard error. Return as vector
+
+#Pre-fire statistics
+lab_stats(fishdata_4R[fishdata_4R$time=="pre-fire",]$length_cm) #fish length
+lab_stats(fishdata_4R[fishdata_4R$time=="pre-fire",]$mass_g) #fish mass
+
+#Post-fire statistics
+lab_stats(fishdata_4R[fishdata_4R$time=="post-fire",]$length_cm) #fish length
+lab_stats(fishdata_4R[fishdata_4R$time=="post-fire",]$mass_g) #fish mass
+
+# 1-way ANOVA on pre- vs. post-fire mass and length
+summary(aov(fishdata_4R$length_cm~fishdata_4R$time)) #ANOVA for fish length pre vs. post fire
+summary(aov(fishdata_4R$mass_g~fishdata_4R$time)) #ANOVA for fish mass pre vs. post fire
+
+```
+
+```{r, warning=FALSE, fig.cap="Histograms showing frequency of various lengths in centimeters and masses in grams of fish in in Cache La Poudre Watershed in 2012 before the High Park Fire (Pre-fire) and in 2013 after the High Park Fire (Post-fire)."}
+
+# Make a 2 x 2 matrix of histograms for pre- and post-fire mass and length
+par(mfrow=c(2,2)) #tell R how I want figures arranged
+
+#Pre-fire histograms
+hist(fishdata_4R[fishdata_4R$time == "pre-fire",]$length_cm,main="Pre-fire length (cm)",xlab="Length (cm)") #fish length
+hist(fishdata_4R[fishdata_4R$time == "pre-fire",]$mass_g,main="Pre-fire mass (g)",xlab="Mass (g)") #fish mass
+
+#Post-fire histograms
+hist(fishdata_4R[fishdata_4R$time == "post-fire",]$length_cm,main="Post-fire length (cm)",xlab="Length (cm)") #fish length
+hist(fishdata_4R[fishdata_4R$time == "post-fire",]$mass_g,main="Post-fire mass (g)",xlab="Mass (g)") #fish mass
+
+```
+
+```{r, warning=FALSE, fig.cap="Boxplots for fish length in centimeters and mass in grams pre and post fire."}
+
+# Make a 2 x 2 matrix of histograms for pre- and post-fire mass and length
+par(mfrow=c(2,2)) #tell R how I want figures arranged
+
+# Make two boxplots side by side
+par(mfrow=c(1,2)) #tell R I want two plots
+boxplot(fishdata_4R$length_cm~fishdata_4R$time, main="Length (cm)",ylab = "Frequency",xlab="Time") #length fre and post fire
+boxplot(fishdata_4R$mass_g~fishdata_4R$time, main="Mass (g)",ylab = "Frequency",xlab="Time") #length fre and post fire
+
+# Reset setting for plots
+par(mfrow=c(1,1)) #return to single plot
+
+```
+
+## Linear regression of fish mass vs. length for before and after the fire
+
+```{r, warning=FALSE, fig.cap="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire."}
+
+# Pre-fire
+# Scatterplot of length and mass where length is the independent variable and mass is the response variable
+plot(mass_g ~ length_cm, data=fishdata_4R[fishdata_4R$time=="pre-fire",], xlab="Length (cm)", ylab="Mass (g)")
+title("Pre-fire Fish Mass vs. Length")
+
+# Linear regression on mass vs.length
+lm_pre <- lm(mass_g ~ length_cm,data=fishdata_4R[fishdata_4R$time=="pre-fire",])
+abline(lm_pre)  #Adds the trendline to the regression scatterplot
+summary(aov(lm_pre)) #shows the results of the pre-fire linear regression ANOVA
+summary(lm_pre) #shows equation of the line, multiple R-squared value
+
+```
+
+```{r, warning=FALSE, fig.cap="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2013 after the High Park Fire."}
+
+# Post-fire
+# Scatterplot of length and mass where length is the independent variable and mass is the response variable
+plot(mass_g ~ length_cm, data=fishdata_4R[fishdata_4R$time=="post-fire",], xlab="Length (cm)", ylab="Mass (g)")
+title("Post-fire Fish Mass vs. Length")
+
+# Linear regression on mass vs.length
+lm_post <- lm(mass_g ~ length_cm,data=fishdata_4R[fishdata_4R$time=="post-fire",])
+abline(lm_post)  #Adds the trendline to the regression scatterplot
+summary(aov(lm_post)) #shows the results of the pre-fire linear regression ANOVA
+summary(lm_post) #shows equation of the line, multiple R-squared value
+
+```
+
+```{r, warning=FALSE, fig.cap="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire (blue, +) and in 2013 after the High Park Fire (red, o)."}
+
+#Pre- and Post-Fire on same graph
+
+# First plot the pre-fire linear regression
+# ylim sets the range of the y-axis; pch="+" makes points appear as plus signs; col="blue" makes plus signs blue
+plot(mass_g ~length_cm,data=fishdata_4R[fishdata_4R$time == "pre-fire",],xlab="Length (cm)",ylab="Mass (g)",ylim=c(0,260), pch="+", col="blue")    
+title("Pre-Fire (+) and Post-Fire (o) Mass vs. Length")
+
+# Run linear regression of pre-fire mass and length to obtain the trend line.
+lm_pre=lm(mass_g ~ length_cm,data=fishdata_4R[fishdata_4R$time == "pre-fire",])
+abline(lm_pre,col="blue")   #adds a trendline to the plot and makes the line blue
+
+# Overlay the post-fire linear regression onto the plot of the pre-fire linear regression
+# Plots post-fire data as o's and colors them red
+points(mass_g ~length_cm,data=fishdata_4R[fishdata_4R$time == "post-fire",],xlab="Length (cm)",ylab="Mass (g)",ylim=c(0,260),col="red")   
+
+# Run linear regression of post-fire mass and length to obtain the trend line.
+lm_post=lm(mass_g ~ length_cm,data=fishdata_4R[fishdata_4R$time == "post-fire",])
+abline(lm_post,col="red")   #adds a trendline to the post-fire linear regression and makes the line red
+
+```
+
+
