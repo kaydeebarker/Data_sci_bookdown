@@ -35,6 +35,15 @@ lagos <- lagosne_load()
 #Grab the lake centroid info
 lake_centers <- lagos$locus
 
+# Make an sf object 
+spatial_lakes <- st_as_sf(lake_centers,coords=c('nhd_long','nhd_lat'),
+                          crs=4326)
+
+#Grab the water quality data
+nutr <- lagos$epi_nutr
+
+#Look at column names
+#names(nutr)
 
 ```
 
@@ -88,7 +97,9 @@ minnesota_lakes %>%
   #mapview(.,zcol = 'lake_area_ha')
 ```
 
-## 1) Show a map outline of Iowa and Illinois (similar to Minnesota map upstream)
+## Part one
+
+### Show a map outline of Iowa and Illinois (similar to Minnesota map upstream)
 
 ```{r}
 Istates <- states %>%
@@ -97,7 +108,7 @@ Istates <- states %>%
 mapview(Istates, canvas = TRUE) 
 ```
 
-## 2) Subset LAGOS data to these sites, how many sites are in Illinois and Iowa combined? How does this compare to Minnesota?
+### Subset LAGOS data to these sites, how many sites are in Illinois and Iowa combined? How does this compare to Minnesota?
 
 ```{r}
 
@@ -114,7 +125,7 @@ Minn_count <- length(minnesota_lakes$lagoslakeid)
 Iowa and Illinois have `r Istates_count` lakes combined, much less than the number of lakes that Minnesota alone has, `r Minn_count`.
 
 
-## 3) What is the distribution of lake size in Iowa vs. Minnesota?
+### What is the distribution of lake size in Iowa vs. Minnesota?
 
 - Here I want to see a histogram plot with lake size on x-axis and frequency on y axis (check out geom_histogram)
 
@@ -138,7 +149,7 @@ ggplot(combined, aes(x= lake_area_ha)) +
 
 ```
 
-## 4) Make an interactive plot of lakes in Iowa and Illinois and color them by lake area in hectares
+### Make an interactive plot of lakes in Iowa and Illinois and color them by lake area in hectares
 
 ```{r, fig.cap="Lakes in Iowa and Illinois, colored by area in hectares."}
 Istates_map = Istates_lakes %>%
@@ -150,6 +161,159 @@ mapview(Istates_map, zcol = 'lake_area_ha',  canvas = TRUE)
 ```
 
 
-## 5) What other data sources might we use to understand how reservoirs and natural lakes vary in size in these three states? 
+### What other data sources might we use to understand how reservoirs and natural lakes vary in size in these three states? 
 
 We might use the US Geological Survey (USGS) National Water Informational System (NWIS) and its National Water Dashboard as a data source, and look at gage height (indicating lake depth) as another parameter for lake size variation. The USGS National Hydrography Dataset (NHD) is another data source that would, similarly to Lagos, give us a surface area metric for lakes in the various states.
+
+## Part two
+
+### Subsets 
+
+#### Columns nutr to only keep key info that we want
+
+```{r}
+clarity_only <- nutr %>%
+  dplyr::select(lagoslakeid,sampledate,chla,doc,secchi) %>%
+  mutate(sampledate = as.character(sampledate) %>% ymd(.))
+
+```
+
+#### Keep sites with at least 200 observations 
+
+```{r}
+
+#Look at the number of rows of dataset
+#nrow(clarity_only)
+
+chla_secchi <- clarity_only %>%
+  filter(!is.na(chla),
+         !is.na(secchi))
+
+# How many observatiosn did we lose?
+# nrow(clarity_only) - nrow(chla_secchi)
+
+
+# Keep only the lakes with at least 200 observations of secchi and chla
+chla_secchi_200 <- chla_secchi %>%
+  group_by(lagoslakeid) %>%
+  mutate(count = n()) %>%
+  filter(count > 200)
+
+
+```
+
+#### Join water quality data to spatial data
+
+```{r}
+spatial_200 <- inner_join(spatial_lakes,chla_secchi_200 %>%
+                            distinct(lagoslakeid,.keep_all=T),
+                          by='lagoslakeid')
+
+```
+
+### Mean Chlorophyll A map
+
+```{r, fig.cap="Mean chlorophyl content at sites with at least 200 observations."}
+### Take the mean chl_a and secchi by lake
+
+means_200 <- chla_secchi_200 %>%
+  # Take summary by lake id
+  group_by(lagoslakeid) %>%
+  # take mean chl_a per lake id
+  summarize(mean_chl = mean(chla,na.rm=T),
+            mean_secchi=mean(secchi,na.rm=T)) %>%
+  #Get rid of NAs
+  filter(!is.na(mean_chl),
+         !is.na(mean_secchi)) %>%
+  # Take the log base 10 of the mean_chl
+  mutate(log10_mean_chl = log10(mean_chl))
+
+#Join datasets
+mean_spatial <- inner_join(spatial_lakes,means_200,
+                          by='lagoslakeid') 
+
+#Make a map
+mapview(mean_spatial, zcol='log10_mean_chl', layer.name = "Mean Chlorophyll A Content")
+```
+
+### What is the correlation between Secchi Disk Depth and Chlorophyll a for sites with at least 200 observations?
+
+```{r, fig.cap="Chlorophyll content has a negative correlation with Secchi disk depth at sites with at least 200 observations."}
+ggplot(means_200) +
+  geom_point(aes(mean_secchi, mean_chl)) +
+  ggthemes::theme_few() + 
+  xlab("Mean Secchi Disk Depth") + ylab("Mean Chlorophyll Content")
+
+```
+
+#### Why might this be the case? 
+
+Secchi disks measure water clarity; the deeper the disk, the clearer the water (1). Chlorophyll content in lakes is generally a reliable marker of algae content, so that high chlorophyll values indicate high algal biomass and corresponding low water clarity (2). Additionally, chlorophyll may be used as a proxy for water quality, since high algal biomass is associated with high nutrient pollution in the process of eutrophication (2). High pollution may further decrease water clarity, so that the relationship between chlorophyll and Secchi disk depth may be expected.
+
+1. “The Secchi Dip-in - What Is a Secchi Disk?” North American Lake Management Society (NALMS),
+https://www.nalms.org/secchidipin/monitoring-methods/the-secchi-disk/what-is-a-secchi-disk/. 
+
+2. Filazzola, A., Mahdiyan, O., Shuvo, A. et al. A database of chlorophyll and water chemistry in freshwater lakes. Sci Data 7, 310 (2020).
+https://doi-org.ezproxy2.library.colostate.edu/10.1038/s41597-020-00648-2
+
+
+### What states have the most data? 
+
+#### Make a lagos spatial dataset that has the total number of counts per site.
+
+```{r}
+
+site_counts <- chla_secchi %>%
+  group_by(lagoslakeid) %>%
+  mutate(count = n())
+
+lake_counts <- inner_join(site_counts, lake_centers, by= "lagoslakeid")%>% 
+  dplyr::select(lagoslakeid,nhd_long,nhd_lat, count, secchi, chla)
+
+spatial_counts <- st_as_sf(lake_counts,coords=c("nhd_long","nhd_lat"),
+                          crs=4326)
+
+```
+
+
+#### Join this point dataset to the us_boundaries data. 
+
+```{r}
+
+states <- us_states()
+
+states_counts <- st_join(spatial_counts, states)
+
+```
+
+
+#### Group by state and sum all the observations in that state and arrange that data from most to least total observations per state. 
+
+```{r}
+
+sum_statecount <- states_counts %>%
+  group_by(state_name) %>%
+  summarize(sum = sum(count)) %>%
+  arrange(desc(sum)) 
+
+sumtable <- tibble(sum_statecount)
+
+view(sumtable)
+
+#ggplot(data = sumtable, aes(x=state_name, y=sum, fill=state_name)) + 
+#  geom_bar(stat = "identity", width = 0.3, position = "dodge") + 
+#  ggthemes::theme_few() +
+#  xlab("State") + ylab(expression(paste("# of Observations"))) 
+
+
+```
+
+Minnesota has the most observations. Vermont, has the next most observations, but less than half of Minnesota's observations. South Dakota has the least number of observations in the dataset.
+
+### Is there a spatial pattern in Secchi disk depth for lakes with at least 200 observations?
+
+```{r, fig.cap="Map showing mean Secchi disk depths of sites with at least 200 observations."}
+mapview(mean_spatial, zcol='mean_secchi', layer.name = "Mean Secchi Disk Depth")
+
+```
+
