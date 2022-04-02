@@ -6,7 +6,7 @@ This assignment combined several methods to look at relationships between crop y
 
 Data from [USDA National Agricultural Statistical Service (NASS)](https://quickstats.nass.usda.gov/). Assignment by Dr. Matthew Ross and Dr. Nathan Mueller of Colorado State University.
 
-```{r setup, include=FALSE}
+```{r Ch7 setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(R.matlab) #pull in matlab files
@@ -22,7 +22,7 @@ library(RColorBrewer)
 
 # daily max temperature
 # dimensions: counties x days x years
-prism <- readMat("prismiowa.mat")
+prism <- readMat("Data_sci_bookdown/data/prismiowa.mat")
 
 # look at county #1
 t_1981_c1 <- prism$tmaxdaily.iowa[1,,1] #first county, all days, first year
