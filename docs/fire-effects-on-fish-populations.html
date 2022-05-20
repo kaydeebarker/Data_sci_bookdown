@@ -20,10 +20,9 @@
   <meta name="twitter:description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
   
 
-<meta name="author" content="Kaydee Barker" />
+<meta name="author" content="Kaydee S. Barker" />
 
 
-<meta name="date" content="2022-03-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -304,8 +303,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-8"><a href="fire-effects-on-fish-populations.html#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Post-fire histograms</span></span>
 <span id="cb23-9"><a href="fire-effects-on-fish-populations.html#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(fishdata_4R[fishdata_4R<span class="sc">$</span>time <span class="sc">==</span> <span class="st">&quot;post-fire&quot;</span>,]<span class="sc">$</span>length_cm,<span class="at">main=</span><span class="st">&quot;Post-fire length (cm)&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Length (cm)&quot;</span>) <span class="co">#fish length</span></span>
 <span id="cb23-10"><a href="fire-effects-on-fish-populations.html#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(fishdata_4R[fishdata_4R<span class="sc">$</span>time <span class="sc">==</span> <span class="st">&quot;post-fire&quot;</span>,]<span class="sc">$</span>mass_g,<span class="at">main=</span><span class="st">&quot;Post-fire mass (g)&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Mass (g)&quot;</span>) <span class="co">#fish mass</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-7-1.png" alt="Histograms showing frequency of various lengths in centimeters and masses in grams of fish in in Cache La Poudre Watershed in 2012 before the High Park Fire (Pre-fire) and in 2013 after the High Park Fire (Post-fire)." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-8-1.png" alt="Histograms showing frequency of various lengths in centimeters and masses in grams of fish in in Cache La Poudre Watershed in 2012 before the High Park Fire (Pre-fire) and in 2013 after the High Park Fire (Post-fire)." width="672" />
 <p class="caption">
 Figure 4.1: Histograms showing frequency of various lengths in centimeters and masses in grams of fish in in Cache La Poudre Watershed in 2012 before the High Park Fire (Pre-fire) and in 2013 after the High Park Fire (Post-fire).
 </p>
@@ -317,8 +316,8 @@ Figure 4.1: Histograms showing frequency of various lengths in centimeters and m
 <span id="cb24-5"><a href="fire-effects-on-fish-populations.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) <span class="co">#tell R I want two plots</span></span>
 <span id="cb24-6"><a href="fire-effects-on-fish-populations.html#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fishdata_4R<span class="sc">$</span>length_cm<span class="sc">~</span>fishdata_4R<span class="sc">$</span>time, <span class="at">main=</span><span class="st">&quot;Length (cm)&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Frequency&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Time&quot;</span>) <span class="co">#length fre and post fire</span></span>
 <span id="cb24-7"><a href="fire-effects-on-fish-populations.html#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(fishdata_4R<span class="sc">$</span>mass_g<span class="sc">~</span>fishdata_4R<span class="sc">$</span>time, <span class="at">main=</span><span class="st">&quot;Mass (g)&quot;</span>,<span class="at">ylab =</span> <span class="st">&quot;Frequency&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Time&quot;</span>) <span class="co">#length fre and post fire</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-8-1.png" alt="Boxplots for fish length in centimeters and mass in grams pre and post fire." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-9-1.png" alt="Boxplots for fish length in centimeters and mass in grams pre and post fire." width="672" />
 <p class="caption">
 Figure 4.2: Boxplots for fish length in centimeters and mass in grams pre and post fire.
 </p>
@@ -336,8 +335,8 @@ Figure 4.2: Boxplots for fish length in centimeters and mass in grams pre and po
 <span id="cb26-6"><a href="fire-effects-on-fish-populations.html#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear regression on mass vs.length</span></span>
 <span id="cb26-7"><a href="fire-effects-on-fish-populations.html#cb26-7" aria-hidden="true" tabindex="-1"></a>lm_pre <span class="ot">&lt;-</span> <span class="fu">lm</span>(mass_g <span class="sc">~</span> length_cm,<span class="at">data=</span>fishdata_4R[fishdata_4R<span class="sc">$</span>time<span class="sc">==</span><span class="st">&quot;pre-fire&quot;</span>,])</span>
 <span id="cb26-8"><a href="fire-effects-on-fish-populations.html#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(lm_pre)  <span class="co">#Adds the trendline to the regression scatterplot</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-9-1.png" alt="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-10-1.png" alt="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire." width="672" />
 <p class="caption">
 Figure 4.3: Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire.
 </p>
@@ -376,8 +375,8 @@ Figure 4.3: Scatterplot and linear regression line of fish length in centimeters
 <span id="cb31-6"><a href="fire-effects-on-fish-populations.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear regression on mass vs.length</span></span>
 <span id="cb31-7"><a href="fire-effects-on-fish-populations.html#cb31-7" aria-hidden="true" tabindex="-1"></a>lm_post <span class="ot">&lt;-</span> <span class="fu">lm</span>(mass_g <span class="sc">~</span> length_cm,<span class="at">data=</span>fishdata_4R[fishdata_4R<span class="sc">$</span>time<span class="sc">==</span><span class="st">&quot;post-fire&quot;</span>,])</span>
 <span id="cb31-8"><a href="fire-effects-on-fish-populations.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(lm_post)  <span class="co">#Adds the trendline to the regression scatterplot</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-10-1.png" alt="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2013 after the High Park Fire." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-11-1.png" alt="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2013 after the High Park Fire." width="672" />
 <p class="caption">
 Figure 4.4: Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2013 after the High Park Fire.
 </p>
@@ -426,8 +425,8 @@ Figure 4.4: Scatterplot and linear regression line of fish length in centimeters
 <span id="cb36-16"><a href="fire-effects-on-fish-populations.html#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Run linear regression of post-fire mass and length to obtain the trend line.</span></span>
 <span id="cb36-17"><a href="fire-effects-on-fish-populations.html#cb36-17" aria-hidden="true" tabindex="-1"></a>lm_post<span class="ot">=</span><span class="fu">lm</span>(mass_g <span class="sc">~</span> length_cm,<span class="at">data=</span>fishdata_4R[fishdata_4R<span class="sc">$</span>time <span class="sc">==</span> <span class="st">&quot;post-fire&quot;</span>,])</span>
 <span id="cb36-18"><a href="fire-effects-on-fish-populations.html#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(lm_post,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)   <span class="co">#adds a trendline to the post-fire linear regression and makes the line red</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-11-1.png" alt="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire (blue, +) and in 2013 after the High Park Fire (red, o)." width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-12-1.png" alt="Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire (blue, +) and in 2013 after the High Park Fire (red, o)." width="672" />
 <p class="caption">
 Figure 4.5: Scatterplot and linear regression line of fish length in centimeters versus fish mass in grams in Cache La Poudre in 2012 before the High Park Fire (blue, +) and in 2013 after the High Park Fire (red, o).
 </p>
