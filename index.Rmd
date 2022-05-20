@@ -1,7 +1,7 @@
 --- 
 title: "We R Under Way: A Data Science Portfolio"
 author: "Kaydee S. Barker"
-date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 always_allow_html: yes
