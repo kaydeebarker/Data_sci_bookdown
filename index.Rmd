@@ -1,7 +1,7 @@
 --- 
 title: "We R Under Way: A Data Science Portfolio"
 author: "Kaydee Barker"
-date: "03/21/2022"
+date: "`r format(Sys.time(), '%B, %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 always_allow_html: yes
