@@ -1,4 +1,4 @@
-# Introduction {#intro}
+# Introduction
 
 >"There are two kinds of data scientists: 1) Those who can extrapolate from incomplete data." 
 

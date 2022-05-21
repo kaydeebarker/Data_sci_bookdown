@@ -25,12 +25,12 @@ fig:unnamed-chunk-38
 fig:unnamed-chunk-39
 fig:unnamed-chunk-40
 fig:unnamed-chunk-41
-intro
+introduction
 interactive-graphing-discharge-of-the-poudre-river
 background-on-the-poudre-river
 interactive-discharge-chart
 looking-at-effects-of-fire-on-vegetation
-introduction
+introduction-1
 what-is-the-correlation-between-ndvi-and-ndmi
 what-month-is-the-greenest-month-on-average
 what-month-is-the-snowiest-on-average
