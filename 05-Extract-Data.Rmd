@@ -14,7 +14,7 @@ library(readxl)
 
 ```
 
-## 1. Extract the meteorological data URLs. Here we want you to use the `rvest` package to get the URLs for the `SASP forcing` and `SBSP_forcing` meteorological datasets.
+## Extract the meteorological data URLs. 
 
 ```{r, warning=FALSE}
 
@@ -31,7 +31,7 @@ links # view
 
 ```
 
-## 2. Download the meteorological data. Use the `download_file` and `str_split_fixed` commands to download the data and save it in your data folder. You can use a for loop or a map function. 
+## Download the meteorological data from the URL
 
 ```{r, warning=FALSE}
 
@@ -63,7 +63,7 @@ if(evaluate == T){
 
 ```
 
-## 3. Write a custom function to read in the data and append a site column to the data. 
+## Write a custom function to read in the data and append a site column to the data
 
 ```{r, warning=FALSE}
 
@@ -96,7 +96,7 @@ headers <- pdf_text('https://snowstudies.org/wp-content/uploads/2022/02/Serially
 
 ```
 
-## 4. Use the `map` function to read in both meteorological files. Display a summary of your tibble.
+## Use the `map` function to read in both meteorological files
 
 ```{r, warning=FALSE}
 
@@ -115,7 +115,7 @@ summary(alldata2)
 
 ```
 
-## 5. Make a line plot of mean temp by year by site (using the `air temp [K]` variable). Is there anything suspicious in the plot? Adjust your filtering if needed.
+## Make a line plot of mean temp by year by site
 
 ```{r, warning=FALSE, fig.cap="Mean temperature of the SASP (teal) and SBSP (orange) sites from 2003 to 2012, in degrees Kelvin."}
 
@@ -133,7 +133,7 @@ ggplot(temp_yearly,aes(x=year, y=mean_temp, color=site)) +
 
 ```
 
-## 6. Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. 
+## Write a function that makes line plots of monthly average temperature at each site for a given year. Use a for loop to make these plots for 2005 to 2010. 
 
 ```{r, warning=FALSE, fig.cap="Mean monthly temperatures in degrees Kelvin for SASP (teal) and SBSP (orange) sites in 2005, 2006, 2007, 2008, 2009, and 2010."}
 
@@ -163,7 +163,7 @@ for(i in 2005:2010){
 
 ```
 
-## Bonus: Make a plot of average daily precipitation by day of year (averaged across all available years)
+## Make a plot of average daily precipitation by day of year (averaged across all available years)
 
 ```{r, warning=FALSE, fig.cap="Mean daily precipitation by day of year, averaged from 2003 to 2012."}
 

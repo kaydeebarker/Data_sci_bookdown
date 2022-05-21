@@ -1,0 +1,127 @@
+# Multivariate Statistics and Principle Components Analysis
+
+A lot of data that we try to analyze is *multivariate*, meaning that the data has multiple records or observations with multiple variables. There are various ways to look at this type of data and describe associations of variables. We may describe associations through *covariance* or a *correlation coefficient*. *Principle Components Analysis (PCA)* is a useful tool for looking at correlation that uses orthogonal transformation to convert observations with potentially correlated variables into a set of values of linearly uncorrelated variables (called principal components). In order to explore PCA as a tool, we looked at wine and how variables of wine are correlated with one another.
+
+Data and assignment provided by Dr. Michael Lefsky of Colorado State University.
+
+```{r Ch8 setup, warning=FALSE, echo=FALSE, message=FALSE}
+
+knitr::opts_knit$set(root.dir='..')
+
+library(tidyverse)
+library(tidyr)
+
+```
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Load dataset
+wine <- read_csv("Data_sci_bookdown/data/winedata.csv")
+
+```
+
+## Scatterplot matrix of variables
+
+```{r, warning=FALSE, fig.cap="Scatterplot matrix demonstrating the relationships between five variables for three wine cultivars. Alcohol, malic acid (malic), ash, alkalinity of ash (alk), and magnesium (Mg) are plotted together on both x and y axes for cultivar 1 (red), cultivar 2 (green), and cultivar 3 (blue). Groupings demonstrate association between variables."}
+
+# generate a scatterplot of variables 2 to 6 where each cultivar is shown in a different color
+pairs(wine[,2:6], main = "Wine Data -- 3 cultivars",
+      pch = 21, bg = c("red", "green3", "blue")[unclass(wine$cultivar)])
+
+```
+
+From the above plot, alcohol and alkalinity don’t seem to have a very strong linear relationship, but it appears that the weak correlation is negative, with alkalinity decreasing as alcohol increases and vice versa. Ash and alkalinity seem to have a slightly stronger linear relationship that is positive; as ash increases, so does alkalinity, and vice versa.
+
+## Correlation matrix
+
+```{r, warning=FALSE}
+
+# Generate a correlation matrix between variables 2 to 14
+cor(wine[,2:14]) 
+```
+Correlation matrix for variables for wine, including alcohol, malic acid (malic), ash, alkalinity of ash (alk), magnesium (Mg), total phenol (totphen), flavonoids (flavan), nonflavanoid phenols (nonflavphen), proanthocyanins (proantho), color intensity (color), hue, OD280/OD315 of diluted wines (OD), and proline.
+
+## Calculate variances
+
+```{r, warning=FALSE}
+
+# Calculate variances for variables 2 to 14 for all variables together
+var(wine[,2:14]) # the diagonal values in the matrix are variances
+
+```
+
+By testing the variances of variables, we can look at whether they need to be standardized in order to get an accurate representation of variable influence in a PCA. In this case, we do need to standardize, because the variances are quite different between variables.
+
+## Standardizing variables
+
+```{r, warning=FALSE}
+
+# You can standardize variables in R using the "scale()" function
+wine.standardized <-as.data.frame(scale(wine[,2:14]))
+
+sapply(wine.standardized, mean) # for calculating mean of all variables
+sapply(wine.standardized, var) # for calculating variance of all variables
+```
+
+## PCA on standardized data 
+
+```{r, warning=FALSE, fig.cap="Screeplot summary of variances in standardized data."}
+
+#Perform PCA on standardized data
+wine.pca <- prcomp(wine.standardized)
+
+# print summary of the PCA
+summary(wine.pca)
+screeplot(wine.pca)
+```
+
+```{r, warning=FALSE, fig.cap="Biplot of the first two principal components for standardized data of three wine cultivars (1-59, 60-130, and 131-178), and loadings for variables alcohol, malic acid (malic), ash, alkalinity of ash (alk), magnesium (Mg), total phenol (totphen), flavonoids (flavan), nonflavanoid phenols (nonflavphen), proanthocyanins (proantho), color intensity (color), hue, OD280/OD315 of diluted wines (OD), and proline."}
+
+# Examine the loadings from the standardized data
+wine.pca$rotation
+
+# Examine the biplot which shows the loadings in the first 2 principal components
+biplot(wine.pca)
+
+# Save the variable loadings to a .csv file
+#write.csv(wine.pca$rotation, file="wine_pca_loadings.csv")
+```
+
+```{r, warning=FALSE, fig.cap="Scatterplot of principal component scores for standardized data of three wine cultivars (1, 2, 3). The first principal component scores are on the x axis, and the second principal component scores are on the y axis. Cultivar 1 is grouped in the upper left, with majority negative scores for principal component 1 and positive scores for principal component 2. Cultivar 2 is grouped with negative scores for principal component 2 and between -2 and 3 for principal component 1. Cultivar 3 is grouped in mostly positive scores for both components."}
+
+# Plot the scores from PC1 and PC2 and add labels
+plot(wine.pca$x[,1], wine.pca$x[,2], main="Scores from PC1 and PC2")
+text(wine.pca$x[,1], wine.pca$x[,2], wine$cultivar,cex=0.7,pos=4,col="red")   #add labels
+```
+
+```{r, warning=FALSE, fig.cap="Scatterplot of principal component scores for three wine cultivars (1, 2, 3). The third principal component scores are on the x axis, and the fourth principal component scores are on the y axis. All three cultivars primarily group in the center, with some outliers, mostly from cultivar 2."}
+
+# Plot the scores from PC3 and PC4 and add labels
+plot(wine.pca$x[,3], wine.pca$x[,4], main="Scores from PC3 and PC4")
+text(wine.pca$x[,3], wine.pca$x[,4], wine$cultivar,cex=0.7,pos=4,col="red")   #add labels
+```
+
+## PCA on raw data 
+
+```{r, warning=FALSE, fig.cap="Screeplot summary of variances in raw data."}
+
+#Perform PCA on the raw data
+wine.pca.raw <- prcomp(wine[,2:14])
+
+# print summary of the Raw PCA
+summary(wine.pca.raw)
+screeplot(wine.pca.raw)
+```
+
+```{r, warning=FALSE, fig.cap="Biplot of the first two principal components of unstandardized (raw) data for comparison."}
+
+# Examine the loadings from the raw data
+wine.pca.raw$rotation
+
+# Save the variable loadings to a .csv file
+#write.csv(wine.pca.raw$rotation, file="wine_pca_rawloadings.csv")
+
+# Biplot which shows the loadings in the first 2 principal components (raw data)
+biplot(wine.pca.raw)
+
+```
+

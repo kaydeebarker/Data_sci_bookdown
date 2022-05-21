@@ -184,7 +184,9 @@ ggplot(yieldtemp_2018) +
 There is a clear relationship with maximum temperatures and corn yields demonstrated in Figure 4. As we might expect, there appears to be a "sweet spot" in regard to temperature, with corn crops performing best at moderate temperatures and yields falling off at both low and high temperature years. Lower mean maximum temperatures may indicate even lower temperatures that can shock crops, and high means are likely to cause high evaporation and withering. P<0.003 for the relationship between temperature and corn yield across Iowa.
 
 
-## Panel: One way to leverage multiple time series is to group all data into what is called a "panel" regression. Convert the county ID code ("countyfp" or "county_ansi") into factor using as.factor, then include this variable in a regression using all counties' yield and summer temperature data. How does the significance of your temperature coefficients (Tmax, Tmax^2) change? Make a plot comparing actual and fitted yields and interpret the results of your model.
+## Panel: One way to leverage multiple time series is to group all data into what is called a "panel" regression. 
+
+Convert the county ID code ("countyfp" or "county_ansi") into factor using as.factor, then include this variable in a regression using all counties' yield and summer temperature data. How does the significance of your temperature coefficients (Tmax, Tmax^2) change? Make a plot comparing actual and fitted yields and interpret the results of your model.
 ```{r, warning=FALSE, fig.cap="Fitted model yield values versus actual yield values for all counties of Iowa over all available years, from 1981 to 2018."}
 
 corn_all <- cornyields %>%

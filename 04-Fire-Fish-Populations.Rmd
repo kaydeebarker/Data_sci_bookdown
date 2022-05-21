@@ -13,11 +13,11 @@ library(emmeans)
 library(plotrix)
 library(lubridate)
 
-# Load dataset
 ```
 
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Load dataset
 fishdata_4R <- read_csv('Data_sci_bookdown/data/fish-fire/fishdata_4R.csv')
 
 ```
