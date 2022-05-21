@@ -51,6 +51,29 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.0/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.0/leaflet-providers-plugin.js"></script>
+<link href="libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -238,11 +261,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Data and assignment provided by Dr. Michael Lefsky of Colorado State University.</p>
 <div id="scatterplot-matrix-of-variables" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Scatterplot matrix of variables<a href="multivariate-statistics-and-principle-components-analysis.html#scatterplot-matrix-of-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a scatterplot of variables 2 to 6 where each cultivar is shown in a different color</span></span>
-<span id="cb1-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">main =</span> <span class="st">&quot;Wine Data -- 3 cultivars&quot;</span>,</span>
-<span id="cb1-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green3&quot;</span>, <span class="st">&quot;blue&quot;</span>)[<span class="fu">unclass</span>(wine<span class="sc">$</span>cultivar)])</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-2-1.png" alt="Scatterplot matrix demonstrating the relationships between five variables for three wine cultivars. Alcohol, malic acid (malic), ash, alkalinity of ash (alk), and magnesium (Mg) are plotted together on both x and y axes for cultivar 1 (red), cultivar 2 (green), and cultivar 3 (blue). Groupings demonstrate association between variables." width="672" />
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a scatterplot of variables 2 to 6 where each cultivar is shown in a different color</span></span>
+<span id="cb126-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>], <span class="at">main =</span> <span class="st">&quot;Wine Data -- 3 cultivars&quot;</span>,</span>
+<span id="cb126-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb126-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">pch =</span> <span class="dv">21</span>, <span class="at">bg =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;green3&quot;</span>, <span class="st">&quot;blue&quot;</span>)[<span class="fu">unclass</span>(wine<span class="sc">$</span>cultivar)])</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-44"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-44-1.png" alt="Scatterplot matrix demonstrating the relationships between five variables for three wine cultivars. Alcohol, malic acid (malic), ash, alkalinity of ash (alk), and magnesium (Mg) are plotted together on both x and y axes for cultivar 1 (red), cultivar 2 (green), and cultivar 3 (blue). Groupings demonstrate association between variables." width="672" />
 <p class="caption">
 Figure 8.1: Scatterplot matrix demonstrating the relationships between five variables for three wine cultivars. Alcohol, malic acid (malic), ash, alkalinity of ash (alk), and magnesium (Mg) are plotted together on both x and y axes for cultivar 1 (red), cultivar 2 (green), and cultivar 3 (blue). Groupings demonstrate association between variables.
 </p>
@@ -251,8 +274,8 @@ Figure 8.1: Scatterplot matrix demonstrating the relationships between five vari
 </div>
 <div id="correlation-matrix" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Correlation matrix<a href="multivariate-statistics-and-principle-components-analysis.html#correlation-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a correlation matrix between variables 2 to 14</span></span>
-<span id="cb2-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]) </span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a correlation matrix between variables 2 to 14</span></span>
+<span id="cb127-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]) </span></code></pre></div>
 <pre><code>##                 alcohol       malic          ash         alk          Mg
 ## alcohol      1.00000000  0.09439694  0.211544596 -0.31023514  0.27079823
 ## malic        0.09439694  1.00000000  0.164045470  0.28850040 -0.05457510
@@ -299,8 +322,8 @@ Figure 8.1: Scatterplot matrix demonstrating the relationships between five vari
 </div>
 <div id="calculate-variances" class="section level2 hasAnchor" number="8.3">
 <h2><span class="header-section-number">8.3</span> Calculate variances<a href="multivariate-statistics-and-principle-components-analysis.html#calculate-variances" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate variances for variables 2 to 14 for all variables together</span></span>
-<span id="cb4-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]) <span class="co"># the diagonal values in the matrix are variances</span></span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate variances for variables 2 to 14 for all variables together</span></span>
+<span id="cb129-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]) <span class="co"># the diagonal values in the matrix are variances</span></span></code></pre></div>
 <pre><code>##                  alcohol        malic           ash          alk           Mg
 ## alcohol       0.65906233   0.08561131  0.0471151590   -0.8410929    3.1398781
 ## malic         0.08561131   1.24801540  0.0502770393    1.0763317   -0.8707795
@@ -347,17 +370,17 @@ Figure 8.1: Scatterplot matrix demonstrating the relationships between five vari
 </div>
 <div id="standardizing-variables" class="section level2 hasAnchor" number="8.4">
 <h2><span class="header-section-number">8.4</span> Standardizing variables<a href="multivariate-statistics-and-principle-components-analysis.html#standardizing-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can standardize variables in R using the &quot;scale()&quot; function</span></span>
-<span id="cb6-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb6-2" aria-hidden="true" tabindex="-1"></a>wine.standardized <span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(<span class="fu">scale</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]))</span>
-<span id="cb6-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(wine.standardized, mean) <span class="co"># for calculating mean of all variables</span></span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can standardize variables in R using the &quot;scale()&quot; function</span></span>
+<span id="cb131-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb131-2" aria-hidden="true" tabindex="-1"></a>wine.standardized <span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(<span class="fu">scale</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>]))</span>
+<span id="cb131-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb131-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb131-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb131-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(wine.standardized, mean) <span class="co"># for calculating mean of all variables</span></span></code></pre></div>
 <pre><code>##       alcohol         malic           ash           alk            Mg 
 ## -8.591766e-16 -6.776446e-17  8.045176e-16 -7.720494e-17 -4.073935e-17 
 ##       totphen        flavan   nonflavphen      proantho         color 
 ## -1.395560e-17  6.958263e-17 -1.042186e-16 -1.221369e-16  3.649376e-17 
 ##           hue            OD       proline 
 ##  2.093741e-16  3.003459e-16 -1.034429e-16</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(wine.standardized, var) <span class="co"># for calculating variance of all variables</span></span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(wine.standardized, var) <span class="co"># for calculating variance of all variables</span></span></code></pre></div>
 <pre><code>##     alcohol       malic         ash         alk          Mg     totphen 
 ##           1           1           1           1           1           1 
 ##      flavan nonflavphen    proantho       color         hue          OD 
@@ -367,11 +390,11 @@ Figure 8.1: Scatterplot matrix demonstrating the relationships between five vari
 </div>
 <div id="pca-on-standardized-data" class="section level2 hasAnchor" number="8.5">
 <h2><span class="header-section-number">8.5</span> PCA on standardized data<a href="multivariate-statistics-and-principle-components-analysis.html#pca-on-standardized-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Perform PCA on standardized data</span></span>
-<span id="cb10-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb10-2" aria-hidden="true" tabindex="-1"></a>wine.pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(wine.standardized)</span>
-<span id="cb10-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print summary of the PCA</span></span>
-<span id="cb10-5"><a href="multivariate-statistics-and-principle-components-analysis.html#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wine.pca)</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Perform PCA on standardized data</span></span>
+<span id="cb135-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb135-2" aria-hidden="true" tabindex="-1"></a>wine.pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(wine.standardized)</span>
+<span id="cb135-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb135-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb135-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb135-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print summary of the PCA</span></span>
+<span id="cb135-5"><a href="multivariate-statistics-and-principle-components-analysis.html#cb135-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wine.pca)</span></code></pre></div>
 <pre><code>## Importance of components:
 ##                          PC1    PC2    PC3     PC4     PC5     PC6     PC7
 ## Standard deviation     2.169 1.5802 1.2025 0.95863 0.92370 0.80103 0.74231
@@ -381,15 +404,15 @@ Figure 8.1: Scatterplot matrix demonstrating the relationships between five vari
 ## Standard deviation     0.59034 0.53748 0.5009 0.47517 0.41082 0.32152
 ## Proportion of Variance 0.02681 0.02222 0.0193 0.01737 0.01298 0.00795
 ## Cumulative Proportion  0.92018 0.94240 0.9617 0.97907 0.99205 1.00000</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">screeplot</span>(wine.pca)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-6-1.png" alt="Screeplot summary of variances in standardized data." width="672" />
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">screeplot</span>(wine.pca)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-48"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-48-1.png" alt="Screeplot summary of variances in standardized data." width="672" />
 <p class="caption">
 Figure 8.2: Screeplot summary of variances in standardized data.
 </p>
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the loadings from the standardized data</span></span>
-<span id="cb13-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb13-2" aria-hidden="true" tabindex="-1"></a>wine.pca<span class="sc">$</span>rotation</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the loadings from the standardized data</span></span>
+<span id="cb138-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb138-2" aria-hidden="true" tabindex="-1"></a>wine.pca<span class="sc">$</span>rotation</span></code></pre></div>
 <pre><code>##                      PC1          PC2         PC3         PC4         PC5
 ## alcohol     -0.144329395  0.483651548 -0.20738262  0.01785630 -0.26566365
 ## malic        0.245187580  0.224930935  0.08901289 -0.53689028  0.03521363
@@ -432,30 +455,30 @@ Figure 8.2: Screeplot summary of variances in standardized data.
 ## hue          0.04821201  0.25921400 -0.08988884
 ## OD          -0.04642330  0.60095872 -0.15671813
 ## proline     -0.53926983 -0.07940162  0.01444734</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the biplot which shows the loadings in the first 2 principal components</span></span>
-<span id="cb15-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biplot</span>(wine.pca)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-7-1.png" alt="Biplot of the first two principal components for standardized data of three wine cultivars (1-59, 60-130, and 131-178), and loadings for variables alcohol, malic acid (malic), ash, alkalinity of ash (alk), magnesium (Mg), total phenol (totphen), flavonoids (flavan), nonflavanoid phenols (nonflavphen), proanthocyanins (proantho), color intensity (color), hue, OD280/OD315 of diluted wines (OD), and proline." width="672" />
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the biplot which shows the loadings in the first 2 principal components</span></span>
+<span id="cb140-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biplot</span>(wine.pca)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-49"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-49-1.png" alt="Biplot of the first two principal components for standardized data of three wine cultivars (1-59, 60-130, and 131-178), and loadings for variables alcohol, malic acid (malic), ash, alkalinity of ash (alk), magnesium (Mg), total phenol (totphen), flavonoids (flavan), nonflavanoid phenols (nonflavphen), proanthocyanins (proantho), color intensity (color), hue, OD280/OD315 of diluted wines (OD), and proline." width="672" />
 <p class="caption">
 Figure 8.3: Biplot of the first two principal components for standardized data of three wine cultivars (1-59, 60-130, and 131-178), and loadings for variables alcohol, malic acid (malic), ash, alkalinity of ash (alk), magnesium (Mg), total phenol (totphen), flavonoids (flavan), nonflavanoid phenols (nonflavphen), proanthocyanins (proantho), color intensity (color), hue, OD280/OD315 of diluted wines (OD), and proline.
 </p>
 </div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the variable loadings to a .csv file</span></span>
-<span id="cb16-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(wine.pca$rotation, file=&quot;wine_pca_loadings.csv&quot;)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the scores from PC1 and PC2 and add labels</span></span>
-<span id="cb17-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">1</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">2</span>], <span class="at">main=</span><span class="st">&quot;Scores from PC1 and PC2&quot;</span>)</span>
-<span id="cb17-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">1</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">2</span>], wine<span class="sc">$</span>cultivar,<span class="at">cex=</span><span class="fl">0.7</span>,<span class="at">pos=</span><span class="dv">4</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)   <span class="co">#add labels</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-8-1.png" alt="Scatterplot of principal component scores for standardized data of three wine cultivars (1, 2, 3). The first principal component scores are on the x axis, and the second principal component scores are on the y axis. Cultivar 1 is grouped in the upper left, with majority negative scores for principal component 1 and positive scores for principal component 2. Cultivar 2 is grouped with negative scores for principal component 2 and between -2 and 3 for principal component 1. Cultivar 3 is grouped in mostly positive scores for both components." width="672" />
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the variable loadings to a .csv file</span></span>
+<span id="cb141-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb141-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(wine.pca$rotation, file=&quot;wine_pca_loadings.csv&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the scores from PC1 and PC2 and add labels</span></span>
+<span id="cb142-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">1</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">2</span>], <span class="at">main=</span><span class="st">&quot;Scores from PC1 and PC2&quot;</span>)</span>
+<span id="cb142-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">1</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">2</span>], wine<span class="sc">$</span>cultivar,<span class="at">cex=</span><span class="fl">0.7</span>,<span class="at">pos=</span><span class="dv">4</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)   <span class="co">#add labels</span></span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-50"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-50-1.png" alt="Scatterplot of principal component scores for standardized data of three wine cultivars (1, 2, 3). The first principal component scores are on the x axis, and the second principal component scores are on the y axis. Cultivar 1 is grouped in the upper left, with majority negative scores for principal component 1 and positive scores for principal component 2. Cultivar 2 is grouped with negative scores for principal component 2 and between -2 and 3 for principal component 1. Cultivar 3 is grouped in mostly positive scores for both components." width="672" />
 <p class="caption">
 Figure 8.4: Scatterplot of principal component scores for standardized data of three wine cultivars (1, 2, 3). The first principal component scores are on the x axis, and the second principal component scores are on the y axis. Cultivar 1 is grouped in the upper left, with majority negative scores for principal component 1 and positive scores for principal component 2. Cultivar 2 is grouped with negative scores for principal component 2 and between -2 and 3 for principal component 1. Cultivar 3 is grouped in mostly positive scores for both components.
 </p>
 </div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the scores from PC3 and PC4 and add labels</span></span>
-<span id="cb18-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">3</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">4</span>], <span class="at">main=</span><span class="st">&quot;Scores from PC3 and PC4&quot;</span>)</span>
-<span id="cb18-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">3</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">4</span>], wine<span class="sc">$</span>cultivar,<span class="at">cex=</span><span class="fl">0.7</span>,<span class="at">pos=</span><span class="dv">4</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)   <span class="co">#add labels</span></span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-9-1.png" alt="Scatterplot of principal component scores for three wine cultivars (1, 2, 3). The third principal component scores are on the x axis, and the fourth principal component scores are on the y axis. All three cultivars primarily group in the center, with some outliers, mostly from cultivar 2." width="672" />
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the scores from PC3 and PC4 and add labels</span></span>
+<span id="cb143-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">3</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">4</span>], <span class="at">main=</span><span class="st">&quot;Scores from PC3 and PC4&quot;</span>)</span>
+<span id="cb143-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb143-3" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(wine.pca<span class="sc">$</span>x[,<span class="dv">3</span>], wine.pca<span class="sc">$</span>x[,<span class="dv">4</span>], wine<span class="sc">$</span>cultivar,<span class="at">cex=</span><span class="fl">0.7</span>,<span class="at">pos=</span><span class="dv">4</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>)   <span class="co">#add labels</span></span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-51"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-51-1.png" alt="Scatterplot of principal component scores for three wine cultivars (1, 2, 3). The third principal component scores are on the x axis, and the fourth principal component scores are on the y axis. All three cultivars primarily group in the center, with some outliers, mostly from cultivar 2." width="672" />
 <p class="caption">
 Figure 8.5: Scatterplot of principal component scores for three wine cultivars (1, 2, 3). The third principal component scores are on the x axis, and the fourth principal component scores are on the y axis. All three cultivars primarily group in the center, with some outliers, mostly from cultivar 2.
 </p>
@@ -463,11 +486,11 @@ Figure 8.5: Scatterplot of principal component scores for three wine cultivars (
 </div>
 <div id="pca-on-raw-data" class="section level2 hasAnchor" number="8.6">
 <h2><span class="header-section-number">8.6</span> PCA on raw data<a href="multivariate-statistics-and-principle-components-analysis.html#pca-on-raw-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Perform PCA on the raw data</span></span>
-<span id="cb19-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb19-2" aria-hidden="true" tabindex="-1"></a>wine.pca.raw <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>])</span>
-<span id="cb19-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print summary of the Raw PCA</span></span>
-<span id="cb19-5"><a href="multivariate-statistics-and-principle-components-analysis.html#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wine.pca.raw)</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Perform PCA on the raw data</span></span>
+<span id="cb144-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb144-2" aria-hidden="true" tabindex="-1"></a>wine.pca.raw <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(wine[,<span class="dv">2</span><span class="sc">:</span><span class="dv">14</span>])</span>
+<span id="cb144-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb144-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb144-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb144-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print summary of the Raw PCA</span></span>
+<span id="cb144-5"><a href="multivariate-statistics-and-principle-components-analysis.html#cb144-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wine.pca.raw)</span></code></pre></div>
 <pre><code>## Importance of components:
 ##                             PC1      PC2     PC3     PC4     PC5     PC6    PC7
 ## Standard deviation     314.9632 13.13527 3.07215 2.23409 1.10853 0.91710 0.5282
@@ -477,15 +500,15 @@ Figure 8.5: Scatterplot of principal component scores for three wine cultivars (
 ## Standard deviation     0.3891 0.3348 0.2678 0.1938 0.1452 0.09057
 ## Proportion of Variance 0.0000 0.0000 0.0000 0.0000 0.0000 0.00000
 ## Cumulative Proportion  1.0000 1.0000 1.0000 1.0000 1.0000 1.00000</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">screeplot</span>(wine.pca.raw)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-10-1.png" alt="Screeplot summary of variances in raw data." width="672" />
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">screeplot</span>(wine.pca.raw)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-52"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-52-1.png" alt="Screeplot summary of variances in raw data." width="672" />
 <p class="caption">
 Figure 8.6: Screeplot summary of variances in raw data.
 </p>
 </div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the loadings from the raw data</span></span>
-<span id="cb22-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb22-2" aria-hidden="true" tabindex="-1"></a>wine.pca.raw<span class="sc">$</span>rotation</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine the loadings from the raw data</span></span>
+<span id="cb147-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb147-2" aria-hidden="true" tabindex="-1"></a>wine.pca.raw<span class="sc">$</span>rotation</span></code></pre></div>
 <pre><code>##                       PC1           PC2          PC3          PC4          PC5
 ## alcohol     -0.0016592647 -1.203406e-03 -0.016873809  0.141446778  0.020336977
 ## malic        0.0006810156 -2.154982e-03 -0.122003373  0.160389543 -0.612883454
@@ -528,13 +551,13 @@ Figure 8.6: Screeplot summary of variances in raw data.
 ## hue          0.0975106606  9.755619e-01 -1.665508e-01
 ## OD           0.0284851062  1.163025e-02  4.419224e-02
 ## proline     -0.0002404522 -9.999951e-05  3.626701e-05</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the variable loadings to a .csv file</span></span>
-<span id="cb24-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(wine.pca.raw$rotation, file=&quot;wine_pca_rawloadings.csv&quot;)</span></span>
-<span id="cb24-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Biplot which shows the loadings in the first 2 principal components (raw data)</span></span>
-<span id="cb24-5"><a href="multivariate-statistics-and-principle-components-analysis.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">biplot</span>(wine.pca.raw)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
-<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-11-1.png" alt="Biplot of the first two principal components of unstandardized (raw) data for comparison." width="672" />
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="multivariate-statistics-and-principle-components-analysis.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the variable loadings to a .csv file</span></span>
+<span id="cb149-2"><a href="multivariate-statistics-and-principle-components-analysis.html#cb149-2" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(wine.pca.raw$rotation, file=&quot;wine_pca_rawloadings.csv&quot;)</span></span>
+<span id="cb149-3"><a href="multivariate-statistics-and-principle-components-analysis.html#cb149-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb149-4"><a href="multivariate-statistics-and-principle-components-analysis.html#cb149-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Biplot which shows the loadings in the first 2 principal components (raw data)</span></span>
+<span id="cb149-5"><a href="multivariate-statistics-and-principle-components-analysis.html#cb149-5" aria-hidden="true" tabindex="-1"></a><span class="fu">biplot</span>(wine.pca.raw)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-53"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-53-1.png" alt="Biplot of the first two principal components of unstandardized (raw) data for comparison." width="672" />
 <p class="caption">
 Figure 8.7: Biplot of the first two principal components of unstandardized (raw) data for comparison.
 </p>
