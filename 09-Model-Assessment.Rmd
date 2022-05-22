@@ -134,5 +134,5 @@ rmse(centgrain13[,3], obsgrain[,3]) # root mean squared error for predicted vs. 
 
 ```
 
-From the MAE, we see that the average amount that predicted values deviated from observed values in either the positive or negative direction was 32.47. If the RMSE was close or equal to the standard deviations of observed data, then the model would be considered a good fit. In this case, the RMSE is much higher than the standard deviations. From this and the low significance of the linear regression models, we can see that the Century Model was not a very good fit with the observed data.
+From the MAE, we see that the average amount that predicted values deviated from observed values in either the positive or negative direction was 32.47. If the RMSE is close or equal to the standard deviations of observed data, then the model would be considered a good fit. In this case, the RMSE is a bit higher than the standard deviations. From this and the low significance of the linear regression models, we can see that the Century Model was not a very good fit with the observed data.
 
