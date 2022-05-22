@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>We R Under Way: A Data Science Portfolio</title>
+  <title>Chapter 9 Evaluating Model Predictions | We R Under Way: A Data Science Portfolio</title>
   <meta name="description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
   <meta name="generator" content="bookdown 0.25 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="We R Under Way: A Data Science Portfolio" />
+  <meta property="og:title" content="Chapter 9 Evaluating Model Predictions | We R Under Way: A Data Science Portfolio" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="We R Under Way: A Data Science Portfolio" />
+  <meta name="twitter:title" content="Chapter 9 Evaluating Model Predictions | We R Under Way: A Data Science Portfolio" />
   
   <meta name="twitter:description" content="Just some of my adventures so far in the lands of environmental data. Warning: I can’t help adding nerd jokes, so pun-ish me." />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="multivariate-statistics-and-principle-components-analysis.html"/>
 
-<link rel="next" href="interactive-graphing-discharge-of-the-poudre-river.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -263,25 +263,171 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">We R Under Way: A Data Science Portfolio</h1>
-<p class="author"><em>Kaydee S. Barker</em></p>
-</div>
-<div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="evaluating-model-predictions" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Evaluating Model Predictions<a href="evaluating-model-predictions.html#evaluating-model-predictions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <blockquote>
-<p>“There are two kinds of data scientists: 1) Those who can extrapolate from incomplete data.”</p>
+<p>“Being a statistician means never having to say you are certain.”</p>
 </blockquote>
-<p>I began my foray into R in the spring of 2020, first teaching myself some basic syntax and then using it for statistical analysis on my research projects as an undergraduate researcher at Colorado State University (CSU). With the help of my research mentors and many amazing people of the internet, I was able to fumble my way forward and learn a number of techniques to analyze and visualize data in R. I have since been building on my R and data science skills, including with the help of two key courses at CSU: “Quantitative Reasoning for Ecosystem Science” (ESS 330) and “Introduction to Environmental Data Science” (SOCR 580A7). Since I can’t yet publish data from my research projects, this portfolio is constructed of public data examples, primarily from my coursework in those two courses. Its purpose is a) to serve as a reference for myself and others learning to use R for environmental analyses, and b) to demonstrate my current R knowledge to advisors and colleagues.</p>
+<p>In environmental sciences, it can be extremely valuable to not only try to parse out correlations and “peer inside the black box” to explain phenomena, but to also try to predict outcomes based on specific inputs and parameters. Equally important when we try to model predictions is to evaluate how well our model performs and predicts data. For this chapter, I looked at predictions from the <a href="https://www2.nrel.colostate.edu/projects/century/MANUAL/html_manual/man96.html">CENTURY Model</a> and evaluated how well the model fit with observed corn and wheat yield data from 1999-2013.</p>
+<p>Data and assignment provided by Dr. Michael Lefsky of Colorado State University.</p>
+<div id="merge-model-predictions-and-observed-data" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Merge model predictions and observed data<a href="evaluating-model-predictions.html#merge-model-predictions-and-observed-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="evaluating-model-predictions.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load datasets</span></span>
+<span id="cb150-2"><a href="evaluating-model-predictions.html#cb150-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-3"><a href="evaluating-model-predictions.html#cb150-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Century Model output through 2016</span></span>
+<span id="cb150-4"><a href="evaluating-model-predictions.html#cb150-4" aria-hidden="true" tabindex="-1"></a>centgrain <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Data_sci_bookdown/data/model-assess/century_harvest.csv&quot;</span>)</span>
+<span id="cb150-5"><a href="evaluating-model-predictions.html#cb150-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-6"><a href="evaluating-model-predictions.html#cb150-6" aria-hidden="true" tabindex="-1"></a>centgrain13 <span class="ot">&lt;-</span> centgrain[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">16</span><span class="sc">:</span><span class="dv">18</span>),] <span class="co">#Century model outputs through 2013</span></span>
+<span id="cb150-7"><a href="evaluating-model-predictions.html#cb150-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-8"><a href="evaluating-model-predictions.html#cb150-8" aria-hidden="true" tabindex="-1"></a>centwheat <span class="ot">&lt;-</span> centgrain13 <span class="sc">%&gt;%</span></span>
+<span id="cb150-9"><a href="evaluating-model-predictions.html#cb150-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Crop <span class="sc">==</span> <span class="st">&quot;wheat&quot;</span>) <span class="co">#just the wheat outputs</span></span>
+<span id="cb150-10"><a href="evaluating-model-predictions.html#cb150-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-11"><a href="evaluating-model-predictions.html#cb150-11" aria-hidden="true" tabindex="-1"></a>centcorn <span class="ot">&lt;-</span> centgrain13 <span class="sc">%&gt;%</span></span>
+<span id="cb150-12"><a href="evaluating-model-predictions.html#cb150-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Crop <span class="sc">==</span> <span class="st">&quot;corn&quot;</span>) <span class="co">#just the corn outputs</span></span>
+<span id="cb150-13"><a href="evaluating-model-predictions.html#cb150-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-14"><a href="evaluating-model-predictions.html#cb150-14" aria-hidden="true" tabindex="-1"></a><span class="co">#load observed data</span></span>
+<span id="cb150-15"><a href="evaluating-model-predictions.html#cb150-15" aria-hidden="true" tabindex="-1"></a>obsgrain <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Data_sci_bookdown/data/model-assess/obs_corn_wheat_cgrain.csv&quot;</span>) <span class="co">#observed data through 2013</span></span>
+<span id="cb150-16"><a href="evaluating-model-predictions.html#cb150-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-17"><a href="evaluating-model-predictions.html#cb150-17" aria-hidden="true" tabindex="-1"></a>obswheat <span class="ot">&lt;-</span> obsgrain <span class="sc">%&gt;%</span></span>
+<span id="cb150-18"><a href="evaluating-model-predictions.html#cb150-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Crop <span class="sc">==</span> <span class="st">&quot;wheat&quot;</span>) <span class="co">#just the wheat outputs</span></span>
+<span id="cb150-19"><a href="evaluating-model-predictions.html#cb150-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-20"><a href="evaluating-model-predictions.html#cb150-20" aria-hidden="true" tabindex="-1"></a>obscorn <span class="ot">&lt;-</span> obsgrain <span class="sc">%&gt;%</span></span>
+<span id="cb150-21"><a href="evaluating-model-predictions.html#cb150-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Crop <span class="sc">==</span> <span class="st">&quot;corn&quot;</span>) <span class="co">#just the corn outputs</span></span>
+<span id="cb150-22"><a href="evaluating-model-predictions.html#cb150-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-23"><a href="evaluating-model-predictions.html#cb150-23" aria-hidden="true" tabindex="-1"></a><span class="co">#merge data from Century Model and observations</span></span>
+<span id="cb150-24"><a href="evaluating-model-predictions.html#cb150-24" aria-hidden="true" tabindex="-1"></a>wheat <span class="ot">&lt;-</span> <span class="fu">merge</span>(centwheat,obswheat, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&#39;Year&#39;</span>,<span class="st">&#39;Crop&#39;</span>), <span class="at">all.x =</span> T) <span class="co"># merge predicted and observed wheat yields</span></span>
+<span id="cb150-25"><a href="evaluating-model-predictions.html#cb150-25" aria-hidden="true" tabindex="-1"></a>corn <span class="ot">&lt;-</span> <span class="fu">merge</span>(centcorn,obscorn, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&#39;Year&#39;</span>,<span class="st">&#39;Crop&#39;</span>), <span class="at">all.x =</span> T) <span class="co"># merge predicted and observed wheat yields</span></span>
+<span id="cb150-26"><a href="evaluating-model-predictions.html#cb150-26" aria-hidden="true" tabindex="-1"></a>allgrain <span class="ot">&lt;-</span> <span class="fu">merge</span>(centgrain13, obsgrain, <span class="at">by=</span><span class="fu">c</span>(<span class="st">&#39;Year&#39;</span>,<span class="st">&#39;Crop&#39;</span>), <span class="at">all.x =</span> T) <span class="co"># merge all predicted and observed</span></span></code></pre></div>
+</div>
+<div id="linear-regression-model-and-anova-of-wheat-predictions-vs.-observations" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Linear regression model and ANOVA of wheat predictions vs. observations<a href="evaluating-model-predictions.html#linear-regression-model-and-anova-of-wheat-predictions-vs.-observations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="evaluating-model-predictions.html#cb151-1" aria-hidden="true" tabindex="-1"></a>lm_wheat <span class="ot">&lt;-</span> <span class="fu">lm</span>(cgrain_cent <span class="sc">~</span> cgrain_obs, <span class="at">data =</span> wheat) <span class="co"># linear model of predicted vs. observed wheat yields</span></span>
+<span id="cb151-2"><a href="evaluating-model-predictions.html#cb151-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_wheat) <span class="co"># intercept, slope (estimate column), P, R^2</span></span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = cgrain_cent ~ cgrain_obs, data = wheat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -59.857  -2.631   6.911  14.383  25.962 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept) 512.0318   127.8900   4.004  0.00709 **
+## cgrain_obs   -0.4359     0.3544  -1.230  0.26473   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 28.83 on 6 degrees of freedom
+## Multiple R-squared:  0.2014, Adjusted R-squared:  0.06827 
+## F-statistic: 1.513 on 1 and 6 DF,  p-value: 0.2647</code></pre>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="evaluating-model-predictions.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(lm_wheat)) <span class="co"># ANOVA</span></span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
+## cgrain_obs   1   1257  1257.3   1.513  0.265
+## Residuals    6   4986   831.1</code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="evaluating-model-predictions.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> wheat, <span class="fu">aes</span>(<span class="at">x=</span>cgrain_cent,<span class="at">y=</span>cgrain_obs)) <span class="sc">+</span> </span>
+<span id="cb155-2"><a href="evaluating-model-predictions.html#cb155-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">color=</span><span class="st">&quot;#78917E&quot;</span>) <span class="sc">+</span></span>
+<span id="cb155-3"><a href="evaluating-model-predictions.html#cb155-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Predicted Yields (g C/m2/yr)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Observed Yields (g C/m2/yr)&quot;</span>))) <span class="sc">+</span> </span>
+<span id="cb155-4"><a href="evaluating-model-predictions.html#cb155-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Predicted vs. Observed Wheat Yields&quot;</span>) <span class="sc">+</span></span>
+<span id="cb155-5"><a href="evaluating-model-predictions.html#cb155-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>(<span class="at">base_size =</span> <span class="dv">16</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-55"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-55-1.png" alt="Scatterplot and linear regression line of predicted and observed wheat yields in grams of carbon (C) per m2 per year between 1999 and 2013. The equation of the line is -0.436x + 512, demonstrating that observed yields were lower than predicted yields on average. The multiple R2 value is 0. 201 and the adjusted R2 value is 0.0683, indicating a very weak linear relationship. The p-value is 0.265, considerably higher than what is generally considered to be significant." width="672" />
+<p class="caption">
+Figure 9.1: Scatterplot and linear regression line of predicted and observed wheat yields in grams of carbon (C) per m2 per year between 1999 and 2013. The equation of the line is -0.436x + 512, demonstrating that observed yields were lower than predicted yields on average. The multiple R2 value is 0. 201 and the adjusted R2 value is 0.0683, indicating a very weak linear relationship. The p-value is 0.265, considerably higher than what is generally considered to be significant.
+</p>
+</div>
+</div>
+<div id="linear-regression-model-and-anova-of-corn-predictions-vs.-observations" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Linear regression model and ANOVA of corn predictions vs. observations<a href="evaluating-model-predictions.html#linear-regression-model-and-anova-of-corn-predictions-vs.-observations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="evaluating-model-predictions.html#cb157-1" aria-hidden="true" tabindex="-1"></a>lm_corn <span class="ot">&lt;-</span> <span class="fu">lm</span>(cgrain_cent <span class="sc">~</span> cgrain_obs, <span class="at">data =</span> corn) <span class="co"># linear model of predicted vs. observed corn yields</span></span>
+<span id="cb157-2"><a href="evaluating-model-predictions.html#cb157-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_corn) <span class="co"># intercept, slope (estimate column), P, R^2</span></span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = cgrain_cent ~ cgrain_obs, data = corn)
+## 
+## Residuals:
+##        1        2        3        4        5        6        7 
+##  -7.7548  -0.1305 -16.2379 -18.3472  14.2575  14.2393  13.9737 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) 281.5815    74.7988   3.765   0.0131 *
+## cgrain_obs    0.3199     0.1731   1.849   0.1238  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 15.89 on 5 degrees of freedom
+## Multiple R-squared:  0.406,  Adjusted R-squared:  0.2872 
+## F-statistic: 3.418 on 1 and 5 DF,  p-value: 0.1238</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="evaluating-model-predictions.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(lm_corn)) <span class="co"># ANOVA</span></span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)
+## cgrain_obs   1  862.4   862.4   3.418  0.124
+## Residuals    5 1261.7   252.3</code></pre>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="evaluating-model-predictions.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> corn, <span class="fu">aes</span>(<span class="at">x=</span>cgrain_cent,<span class="at">y=</span>cgrain_obs)) <span class="sc">+</span> </span>
+<span id="cb161-2"><a href="evaluating-model-predictions.html#cb161-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">&quot;lm&quot;</span>, <span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">color=</span><span class="st">&quot;#78917E&quot;</span>) <span class="sc">+</span></span>
+<span id="cb161-3"><a href="evaluating-model-predictions.html#cb161-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Predicted Yields (g C/m2/yr)&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Observed Yields (g C/m2/yr)&quot;</span>))) <span class="sc">+</span> </span>
+<span id="cb161-4"><a href="evaluating-model-predictions.html#cb161-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Predicted vs. Observed Corn Yields&quot;</span>) <span class="sc">+</span></span>
+<span id="cb161-5"><a href="evaluating-model-predictions.html#cb161-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_few</span>(<span class="at">base_size =</span> <span class="dv">16</span>)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-56"></span>
+<img src="Rportfolio-bookdown_files/figure-html/unnamed-chunk-56-1.png" alt="Scatterplot and linear regression line of predicted and observed corn yields in grams of carbon (C) per m2 per year between 1999 and 2013. The equation of the line is 0.320x + 282, demonstrating that observed yields were higher than predicted yields on average. The multiple R2 value is 0.406 and the adjusted R2 value is 0.287, indicating that the linear relationship is weak. The p-value is 0.124, a little higher than what is generally considered to be significant." width="672" />
+<p class="caption">
+Figure 9.2: Scatterplot and linear regression line of predicted and observed corn yields in grams of carbon (C) per m2 per year between 1999 and 2013. The equation of the line is 0.320x + 282, demonstrating that observed yields were higher than predicted yields on average. The multiple R2 value is 0.406 and the adjusted R2 value is 0.287, indicating that the linear relationship is weak. The p-value is 0.124, a little higher than what is generally considered to be significant.
+</p>
+</div>
+</div>
+<div id="mean-standard-deviation-and-standard-error-for-predicted-and-observed-outputs" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Mean, standard deviation, and standard error for predicted and observed outputs<a href="evaluating-model-predictions.html#mean-standard-deviation-and-standard-error-for-predicted-and-observed-outputs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="evaluating-model-predictions.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summary stats for predicted outputs - mean, sd, se</span></span>
+<span id="cb163-2"><a href="evaluating-model-predictions.html#cb163-2" aria-hidden="true" tabindex="-1"></a>centwheat <span class="sc">%&gt;%</span> <span class="co"># summary stats for CM wheat outputs</span></span>
+<span id="cb163-3"><a href="evaluating-model-predictions.html#cb163-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb163-4"><a href="evaluating-model-predictions.html#cb163-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(cgrain_cent), <span class="co"># mean</span></span>
+<span id="cb163-5"><a href="evaluating-model-predictions.html#cb163-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(cgrain_cent), <span class="co"># standard deviation</span></span>
+<span id="cb163-6"><a href="evaluating-model-predictions.html#cb163-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">SE =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="co"># standard error</span></span></code></pre></div>
+<pre><code>##   n     mean       sd       SE
+## 1 8 355.2258 29.86568 10.55911</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="evaluating-model-predictions.html#cb165-1" aria-hidden="true" tabindex="-1"></a>centcorn <span class="sc">%&gt;%</span> <span class="co"># summary stats for CM corn outputs</span></span>
+<span id="cb165-2"><a href="evaluating-model-predictions.html#cb165-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb165-3"><a href="evaluating-model-predictions.html#cb165-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(cgrain_cent), <span class="co"># mean</span></span>
+<span id="cb165-4"><a href="evaluating-model-predictions.html#cb165-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(cgrain_cent), <span class="co"># standard deviation</span></span>
+<span id="cb165-5"><a href="evaluating-model-predictions.html#cb165-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">SE =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="co"># standard error</span></span></code></pre></div>
+<pre><code>##   n     mean       sd       SE
+## 1 7 419.4124 18.81556 7.111612</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="evaluating-model-predictions.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summary stats for observed outputs - mean, sd, se</span></span>
+<span id="cb167-2"><a href="evaluating-model-predictions.html#cb167-2" aria-hidden="true" tabindex="-1"></a>obswheat <span class="sc">%&gt;%</span> <span class="co"># summary stats for observed wheat outputs</span></span>
+<span id="cb167-3"><a href="evaluating-model-predictions.html#cb167-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb167-4"><a href="evaluating-model-predictions.html#cb167-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(cgrain_obs), <span class="co"># mean</span></span>
+<span id="cb167-5"><a href="evaluating-model-predictions.html#cb167-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(cgrain_obs), <span class="co"># standard deviation</span></span>
+<span id="cb167-6"><a href="evaluating-model-predictions.html#cb167-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">SE =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="co"># standard error</span></span></code></pre></div>
+<pre><code>##   n  mean       sd       SE
+## 1 8 359.7 30.74364 10.86952</code></pre>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="evaluating-model-predictions.html#cb169-1" aria-hidden="true" tabindex="-1"></a>obscorn <span class="sc">%&gt;%</span> <span class="co"># summary stats for observed corn outputs</span></span>
+<span id="cb169-2"><a href="evaluating-model-predictions.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb169-3"><a href="evaluating-model-predictions.html#cb169-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(cgrain_obs), <span class="co"># mean</span></span>
+<span id="cb169-4"><a href="evaluating-model-predictions.html#cb169-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(cgrain_obs), <span class="co"># standard deviation</span></span>
+<span id="cb169-5"><a href="evaluating-model-predictions.html#cb169-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">SE =</span> sd<span class="sc">/</span><span class="fu">sqrt</span>(n)) <span class="co"># standard error</span></span></code></pre></div>
+<pre><code>##   n     mean       sd       SE
+## 1 7 430.8286 37.47473 14.16412</code></pre>
+</div>
+<div id="model-evaluation-via-mean-absolute-error-mae-and-root-mean-squared-error-rmse" class="section level2 hasAnchor" number="9.5">
+<h2><span class="header-section-number">9.5</span> Model evaluation via Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE)<a href="evaluating-model-predictions.html#model-evaluation-via-mean-absolute-error-mae-and-root-mean-squared-error-rmse" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="evaluating-model-predictions.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Model evaluation stats</span></span>
+<span id="cb171-2"><a href="evaluating-model-predictions.html#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(centgrain13[,<span class="dv">3</span>], obsgrain[,<span class="dv">3</span>]) <span class="co"># mean absolute error for predicted vs. observed yields</span></span></code></pre></div>
+<pre><code>## [1] 32.46613</code></pre>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="evaluating-model-predictions.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(centgrain13[,<span class="dv">3</span>], obsgrain[,<span class="dv">3</span>]) <span class="co"># root mean squared error for predicted vs. observed yields</span></span></code></pre></div>
+<pre><code>## [1] 40.71014</code></pre>
+<p>From the MAE, we see that the average amount that predicted values deviated from observed values in either the positive or negative direction was 32.47. If the RMSE was close or equal to the standard deviations of observed data, then the model would be considered a good fit. In this case, the RMSE is much higher than the standard deviations. From this and the low significance of the linear regression models, we can see that the Century Model was not a very good fit with the observed data.</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="multivariate-statistics-and-principle-components-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="interactive-graphing-discharge-of-the-poudre-river.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

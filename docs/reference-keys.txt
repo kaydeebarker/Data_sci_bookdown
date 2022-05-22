@@ -32,6 +32,8 @@ fig:unnamed-chunk-50
 fig:unnamed-chunk-51
 fig:unnamed-chunk-52
 fig:unnamed-chunk-53
+fig:unnamed-chunk-55
+fig:unnamed-chunk-56
 introduction
 interactive-graphing-discharge-of-the-poudre-river
 background-on-the-poudre-river
@@ -94,3 +96,9 @@ calculate-variances
 standardizing-variables
 pca-on-standardized-data
 pca-on-raw-data
+evaluating-model-predictions
+merge-model-predictions-and-observed-data
+linear-regression-model-and-anova-of-wheat-predictions-vs.-observations
+linear-regression-model-and-anova-of-corn-predictions-vs.-observations
+mean-standard-deviation-and-standard-error-for-predicted-and-observed-outputs
+model-evaluation-via-mean-absolute-error-mae-and-root-mean-squared-error-rmse
