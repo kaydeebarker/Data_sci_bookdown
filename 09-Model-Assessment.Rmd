@@ -2,7 +2,7 @@
 
 >"Being a statistician means never having to say you are certain."
 
-
+In environmental sciences, it can be extremely valuable to not only try to parse out correlations and "peer inside the black box" to explain phenomena, but to also try to predict outcomes based on specific inputs and parameters. Equally important when we try to model predictions is to evaluate how well our model performs and predicts data. For this chapter, I looked at predictions from the [CENTURY Model](https://www2.nrel.colostate.edu/projects/century/MANUAL/html_manual/man96.html) and evaluated how well the model fit with observed corn and wheat yield data from 1999-2013.
 
 Data and assignment provided by Dr. Michael Lefsky of Colorado State University.
 
