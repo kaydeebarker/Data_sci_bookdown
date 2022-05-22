@@ -1,0 +1,137 @@
+# Evaluating Model Predictions
+
+>"Being a statistician means never having to say you are certain."
+
+
+
+Data and assignment provided by Dr. Michael Lefsky of Colorado State University.
+
+```{r Ch9 setup, warning=FALSE, echo=FALSE, message=FALSE}
+
+knitr::opts_knit$set(root.dir='..')
+
+library(tidyr)
+library(readr) #read files
+library(dplyr) #lots of functions
+library(ggplot2) #all of the graphs
+library(ggthemes) #themes for ggplots
+library(lme4) #mixed models
+library(lmerTest)
+library(emmeans)
+library(plotrix)
+library(car) #ANOVA
+library(MASS)
+library(RColorBrewer) #color pallets for graphs
+library(Metrics) #does rmse function
+library(mgcv) #can do generalized additive models
+library(MuMIn) #Multi Model Inference - AIC, GME
+
+```
+
+## Merge model predictions and observed data
+
+```{r, warning=FALSE, message=FALSE}
+
+# Load datasets
+
+#Century Model output through 2016
+centgrain <- read.csv("Data_sci_bookdown/data/model-assess/century_harvest.csv")
+
+centgrain13 <- centgrain[-c(16:18),] #Century model outputs through 2013
+
+centwheat <- centgrain13 %>%
+  filter(Crop == "wheat") #just the wheat outputs
+
+centcorn <- centgrain13 %>%
+  filter(Crop == "corn") #just the corn outputs
+
+#load observed data
+obsgrain <- read.csv("Data_sci_bookdown/data/model-assess/obs_corn_wheat_cgrain.csv") #observed data through 2013
+
+obswheat <- obsgrain %>%
+  filter(Crop == "wheat") #just the wheat outputs
+
+obscorn <- obsgrain %>%
+  filter(Crop == "corn") #just the corn outputs
+
+#merge data from Century Model and observations
+wheat <- merge(centwheat,obswheat, by=c('Year','Crop'), all.x = T) # merge predicted and observed wheat yields
+corn <- merge(centcorn,obscorn, by=c('Year','Crop'), all.x = T) # merge predicted and observed wheat yields
+allgrain <- merge(centgrain13, obsgrain, by=c('Year','Crop'), all.x = T) # merge all predicted and observed
+
+```
+
+## Linear regression model and ANOVA of wheat predictions vs. observations
+
+```{r, warning=FALSE, fig.cap="Scatterplot and linear regression line of predicted and observed wheat yields in grams of carbon (C) per m2 per year between 1999 and 2013. The equation of the line is -0.436x + 512, demonstrating that observed yields were lower than predicted yields on average. The multiple R2 value is 0. 201 and the adjusted R2 value is 0.0683, indicating a very weak linear relationship. The p-value is 0.265, considerably higher than what is generally considered to be significant."}
+
+lm_wheat <- lm(cgrain_cent ~ cgrain_obs, data = wheat) # linear model of predicted vs. observed wheat yields
+summary(lm_wheat) # intercept, slope (estimate column), P, R^2
+summary(aov(lm_wheat)) # ANOVA
+
+ggplot(data = wheat, aes(x=cgrain_cent,y=cgrain_obs)) + 
+  geom_point(color="black") + geom_smooth(method="lm", se=FALSE, color="#78917E") +
+  xlab("Predicted Yields (g C/m2/yr)") + ylab(expression(paste("Observed Yields (g C/m2/yr)"))) + 
+  ggtitle("Predicted vs. Observed Wheat Yields") +
+  theme_few(base_size = 16)
+
+```
+
+## Linear regression model and ANOVA of corn predictions vs. observations
+
+```{r, warning=FALSE, fig.cap="Scatterplot and linear regression line of predicted and observed corn yields in grams of carbon (C) per m2 per year between 1999 and 2013. The equation of the line is 0.320x + 282, demonstrating that observed yields were higher than predicted yields on average. The multiple R2 value is 0.406 and the adjusted R2 value is 0.287, indicating that the linear relationship is weak. The p-value is 0.124, a little higher than what is generally considered to be significant."}
+
+lm_corn <- lm(cgrain_cent ~ cgrain_obs, data = corn) # linear model of predicted vs. observed corn yields
+summary(lm_corn) # intercept, slope (estimate column), P, R^2
+summary(aov(lm_corn)) # ANOVA
+
+ggplot(data = corn, aes(x=cgrain_cent,y=cgrain_obs)) + 
+  geom_point(color="black") + geom_smooth(method="lm", se=FALSE, color="#78917E") +
+  xlab("Predicted Yields (g C/m2/yr)") + ylab(expression(paste("Observed Yields (g C/m2/yr)"))) + 
+  ggtitle("Predicted vs. Observed Corn Yields") +
+  theme_few(base_size = 16)
+
+```
+
+## Mean, standard deviation, and standard error for predicted and observed outputs
+
+```{r, warning=FALSE}
+
+#Summary stats for predicted outputs - mean, sd, se
+centwheat %>% # summary stats for CM wheat outputs
+  summarise(n = n(),
+            mean = mean(cgrain_cent), # mean
+            sd = sd(cgrain_cent), # standard deviation
+            SE = sd/sqrt(n)) # standard error
+
+centcorn %>% # summary stats for CM corn outputs
+  summarise(n = n(),
+            mean = mean(cgrain_cent), # mean
+            sd = sd(cgrain_cent), # standard deviation
+            SE = sd/sqrt(n)) # standard error
+
+#Summary stats for observed outputs - mean, sd, se
+obswheat %>% # summary stats for observed wheat outputs
+  summarise(n = n(),
+            mean = mean(cgrain_obs), # mean
+            sd = sd(cgrain_obs), # standard deviation
+            SE = sd/sqrt(n)) # standard error
+
+obscorn %>% # summary stats for observed corn outputs
+  summarise(n = n(),
+            mean = mean(cgrain_obs), # mean
+            sd = sd(cgrain_obs), # standard deviation
+            SE = sd/sqrt(n)) # standard error
+```
+
+## Model evaluation via Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and Model Efficiency (ME)
+
+```{r, warning=FALSE}
+
+#Model evaluation stats
+mae(centgrain13[,3], obsgrain[,3]) # mean absolute error for predicted vs. observed yields
+rmse(centgrain13[,3], obsgrain[,3]) # root mean squared error for predicted vs. observed yields
+
+```
+
+

@@ -1,5 +1,7 @@
 # Multivariate Statistics and Principle Components Analysis
 
+>"I've been searching for college courses about correlation studies... but I can't find the best fit."
+
 A lot of data that we try to analyze is *multivariate*, meaning that the data has multiple records or observations with multiple variables. There are various ways to look at this type of data and describe associations of variables. We may describe associations through *covariance* or a *correlation coefficient*. *Principle Components Analysis (PCA)* is a useful tool for looking at correlation that uses orthogonal transformation to convert observations with potentially correlated variables into a set of values of linearly uncorrelated variables (called principal components). In order to explore PCA as a tool, we looked at wine and how variables of wine are correlated with one another.
 
 Data and assignment provided by Dr. Michael Lefsky of Colorado State University.
